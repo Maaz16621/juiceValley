@@ -69,7 +69,9 @@ function Table({ columns, rows }) {
         fontWeight={fontWeightBold}
         color="secondary"
         opacity={0.7}
-        sx={({ palette: { light } }) => ({ borderBottom: `${borderWidth[1]} solid ${light.main}` })}
+        sx={({ borders: { borderWidth, borderColor } }) => ({
+          borderBottom: `${borderWidth[1]} solid ${borderColor}`,
+        })}
       >
         {name.toUpperCase()}
       </ArgonBox>
@@ -88,8 +90,8 @@ function Table({ columns, rows }) {
             key={uuidv4()}
             component="td"
             p={1}
-            sx={({ palette: { light } }) => ({
-              borderBottom: row.hasBorder ? `${borderWidth[1]} solid ${light.main}` : null,
+            sx={({ borders: { borderWidth, borderColor } }) => ({
+              borderBottom: row.hasBorder ? `${borderWidth[1]} solid ${borderColor}` : null,
             })}
           >
             <ArgonBox display="flex" alignItems="center" py={0.5} px={1}>
@@ -111,8 +113,8 @@ function Table({ columns, rows }) {
             textAlign={align}
             verticalAlign="middle"
             lineHeight={0.65}
-            sx={({ palette: { light } }) => ({
-              borderBottom: row.hasBorder ? `${borderWidth[1]} solid ${light.main}` : null,
+            sx={({ borders: { borderWidth, borderColor } }) => ({
+              borderBottom: row.hasBorder ? `${borderWidth[1]} solid ${borderColor}` : null,
             })}
           >
             <ArgonTypography

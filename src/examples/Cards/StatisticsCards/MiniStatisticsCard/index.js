@@ -60,7 +60,7 @@ function MiniStatisticsCard({ bgColor, title, count, percentage, icon, direction
               <ArgonBox ml={direction === "left" ? 2 : 0} lineHeight={1}>
                 <ArgonTypography
                   variant="button"
-                  color={bgColor === "white" ? "text" : "white"}
+                  color="dark"
                   opacity={bgColor === "white" ? 1 : 0.7}
                   textTransform="uppercase"
                   fontWeight={title.fontWeight}
@@ -70,7 +70,7 @@ function MiniStatisticsCard({ bgColor, title, count, percentage, icon, direction
                 <ArgonTypography
                   variant="h5"
                   fontWeight="bold"
-                  color={bgColor === "white" ? "dark" : "white"}
+                  color="dark"
                 >
                   {count}{" "}
                   <ArgonTypography variant="button" color={percentage.color} fontWeight="bold">

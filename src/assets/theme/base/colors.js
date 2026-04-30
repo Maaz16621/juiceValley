@@ -46,8 +46,8 @@ const colors = {
   },
 
   primary: {
-    main: "#5e72e4",
-    focus: "#5e72e4",
+    main: "#3c9242",
+    focus: "#3c9242",
   },
 
   secondary: {
@@ -56,8 +56,8 @@ const colors = {
   },
 
   info: {
-    main: "#11cdef",
-    focus: "#11cdef",
+    main: "#3c9242",
+    focus: "#3c9242",
   },
 
   success: {
@@ -99,8 +99,8 @@ const colors = {
 
   gradients: {
     primary: {
-      main: "#5e72e4",
-      state: "#825ee4",
+      main: "#3c9242",
+      state: "#2a662e",
     },
 
     secondary: {
@@ -109,8 +109,8 @@ const colors = {
     },
 
     info: {
-      main: "#1171ef",
-      state: "#11cdef",
+      main: "#3c9242",
+      state: "#2a662e",
     },
 
     success: {
@@ -203,9 +203,9 @@ const colors = {
 
   alertColors: {
     primary: {
-      main: "#5e72e4",
-      state: "#673bde",
-      border: "#cfd5f7",
+      main: "#3c9242",
+      state: "#2a662e",
+      border: "#bce0ed",
     },
 
     secondary: {
@@ -215,9 +215,9 @@ const colors = {
     },
 
     info: {
-      main: "#1171ef",
-      state: "#0eadca",
-      border: "#b8f0fa",
+      main: "#3c9242",
+      state: "#2a662e",
+      border: "#bce0ed",
     },
 
     success: {
@@ -253,8 +253,8 @@ const colors = {
 
   badgeColors: {
     primary: {
-      background: "#eaecfb",
-      text: "##2643e9",
+      background: "#e3f5e5",
+      text: "#3c9242",
     },
 
     secondary: {
@@ -263,8 +263,8 @@ const colors = {
     },
 
     info: {
-      background: "#aaedf9",
-      text: "#03acca",
+      background: "#e3f5e5",
+      text: "#3c9242",
     },
 
     success: {
@@ -294,7 +294,7 @@ const colors = {
   },
 
   inputColors: {
-    borderColor: { main: "#d2d6da", focus: "#11cdef" },
+    borderColor: { main: "#d2d6da", focus: "#3c9242" },
     error: "#f5365c",
     success: "#2dce89",
   },

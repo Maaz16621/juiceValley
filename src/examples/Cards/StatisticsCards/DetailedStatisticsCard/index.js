@@ -74,7 +74,7 @@ function DetailedStaticsCard({ bgColor, title, count, percentage, icon, directio
               <ArgonBox ml={direction === "left" ? 2 : 0} lineHeight={1}>
                 <ArgonTypography
                   variant="button"
-                  color={bgColor === "white" ? "text" : "white"}
+                  color="dark"
                   textTransform="uppercase"
                   fontWeight="medium"
                 >
@@ -83,7 +83,7 @@ function DetailedStaticsCard({ bgColor, title, count, percentage, icon, directio
                 <ArgonTypography
                   variant="h5"
                   fontWeight="bold"
-                  color={bgColor === "white" ? "dark" : "white"}
+                  color="dark"
                   mb={1}
                 >
                   {count}
@@ -133,7 +133,7 @@ function DetailedStaticsCard({ bgColor, title, count, percentage, icon, directio
             <ArgonTypography
               variant="body2"
               fontWeight="regular"
-              color={bgColor === "white" ? "text" : "white"}
+              color="dark"
               ml={0.5}
               mt={-0.125}
             >

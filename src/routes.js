@@ -35,16 +35,21 @@ Coded by www.creative-tim.com
 
 // Argon Dashboard 2 MUI layouts
 import Dashboard from "layouts/dashboard";
-import Tables from "layouts/tables";
-import Billing from "layouts/billing";
-import VirtualReality from "layouts/virtual-reality";
-import RTL from "layouts/rtl";
+
 import Profile from "layouts/profile";
 import SignIn from "layouts/authentication/sign-in";
-import SignUp from "layouts/authentication/sign-up";
 
 // Argon Dashboard 2 MUI components
 import ArgonBox from "components/ArgonBox";
+
+import Categories from "layouts/categories";
+import Products from "layouts/products";
+import Deals from "layouts/deals";
+import Settings from "layouts/settings";
+import Discounts from "layouts/discounts";
+import Coupons from "layouts/coupons";
+import Staff from "layouts/staff";
+import Users from "layouts/users";
 
 const routes = [
   {
@@ -57,38 +62,69 @@ const routes = [
   },
   {
     type: "route",
-    name: "Tables",
-    key: "tables",
-    route: "/tables",
-    icon: (
-      <ArgonBox component="i" color="warning" fontSize="14px" className="ni ni-calendar-grid-58" />
-    ),
-    component: <Tables />,
+    name: "Categories",
+    key: "categories",
+    route: "/categories",
+    icon: <ArgonBox component="i" color="info" fontSize="14px" className="ni ni-archive-2" />,
+    component: <Categories />,
   },
   {
     type: "route",
-    name: "Billing",
-    key: "billing",
-    route: "/billing",
-    icon: <ArgonBox component="i" color="success" fontSize="14px" className="ni ni-credit-card" />,
-    component: <Billing />,
+    name: "Products",
+    key: "products",
+    route: "/products",
+    icon: <ArgonBox component="i" color="success" fontSize="14px" className="ni ni-box-2" />,
+    component: <Products />,
   },
   {
     type: "route",
-    name: "Virtual Reality",
-    key: "virtual-reality",
-    route: "/virtual-reality",
-    icon: <ArgonBox component="i" color="info" fontSize="14px" className="ni ni-app" />,
-    component: <VirtualReality />,
+    name: "Deals",
+    key: "deals",
+    route: "/deals",
+    icon: <ArgonBox component="i" color="error" fontSize="14px" className="ni ni-tag" />,
+    component: <Deals />,
   },
   {
     type: "route",
-    name: "RTL",
-    key: "rtl",
-    route: "/rtl",
-    icon: <ArgonBox component="i" color="error" fontSize="14px" className="ni ni-world-2" />,
-    component: <RTL />,
+    name: "Discounts",
+    key: "discounts",
+    route: "/discounts",
+    icon: <ArgonBox component="i" color="warning" fontSize="14px" className="ni ni-tag" />,
+    component: <Discounts />,
   },
+  {
+    type: "route",
+    name: "Coupons",
+    key: "coupons",
+    route: "/coupons",
+    icon: <ArgonBox component="i" color="error" fontSize="14px" className="ni ni-badge" />,
+    component: <Coupons />,
+  },
+  {
+    type: "route",
+    name: "Staff",
+    key: "staff",
+    route: "/staff",
+    icon: <ArgonBox component="i" color="info" fontSize="14px" className="ni ni-circle-08" />,
+    component: <Staff />,
+  },
+  {
+    type: "route",
+    name: "Users",
+    key: "users",
+    route: "/users",
+    icon: <ArgonBox component="i" color="dark" fontSize="14px" className="ni ni-circle-08" />,
+    component: <Users />,
+  },
+  {
+    type: "route",
+    name: "Settings",
+    key: "settings",
+    route: "/settings",
+    icon: <ArgonBox component="i" color="secondary" fontSize="14px" className="ni ni-settings-gear-65" />,
+    component: <Settings />,
+  },
+
   { type: "title", title: "Account Pages", key: "account-pages" },
   {
     type: "route",
@@ -102,19 +138,11 @@ const routes = [
     type: "route",
     name: "Sign In",
     key: "sign-in",
-    route: "/authentication/sign-in",
+    route: "/sign-in",
     icon: (
       <ArgonBox component="i" color="warning" fontSize="14px" className="ni ni-single-copy-04" />
     ),
     component: <SignIn />,
-  },
-  {
-    type: "route",
-    name: "Sign Up",
-    key: "sign-up",
-    route: "/authentication/sign-up",
-    icon: <ArgonBox component="i" color="info" fontSize="14px" className="ni ni-collection" />,
-    component: <SignUp />,
   },
 ];
 

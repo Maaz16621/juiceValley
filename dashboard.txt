@@ -1,0 +1,13 @@
+Dashboard Features
+Add, edit, delete products
+Manage Categories
+Manage SubCategories
+Manage prices, images, descriptions
+Orders and booking management
+Payment management
+User management
+Promotions & discount management
+Popup offers and announcements
+Analytics and reporting
+Inventory updates
+Automatic sync with Webflow

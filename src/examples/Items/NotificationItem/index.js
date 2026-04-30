@@ -44,7 +44,13 @@ const NotificationItem = forwardRef(({ color, image, title, date, ...rest }, ref
     </ArgonBox>
     <ArgonBox>
       <ArgonTypography variant="button" textTransform="capitalize" fontWeight="regular">
-        <strong>{title[0]}</strong> {title[1]}
+        {typeof title === "string" ? (
+          <strong>{title}</strong>
+        ) : (
+          <>
+            <strong>{title[0]}</strong> {title[1]}
+          </>
+        )}
       </ArgonTypography>
       <ArgonTypography
         variant="caption"

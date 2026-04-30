@@ -1,18 +1,3 @@
-/**
-=========================================================
-* Argon Dashboard 2 MUI - v3.0.1
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/argon-dashboard-material-ui
-* Copyright 2023 Creative Tim (https://www.creative-tim.com)
-
-Coded by www.creative-tim.com
-
- =========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-*/
-
 import { useState, useEffect } from "react";
 
 // @mui material components
@@ -35,13 +20,20 @@ import breakpoints from "assets/theme/base/breakpoints";
 
 // Images
 import burceMars from "assets/images/bruce-mars.jpg";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "../../../../firebase";
+
+const bgImage =
+  "https://raw.githubusercontent.com/creativetimofficial/public-assets/master/argon-dashboard-pro/assets/img/profile-layout-header.jpg";
+
 
 function Header() {
   const [tabsOrientation, setTabsOrientation] = useState("horizontal");
   const [tabValue, setTabValue] = useState(0);
+  const [user, setUser] = useState(null)
 
   useEffect(() => {
-    // A function that sets the orientation state of the tabs.
+    // A function that sets the orientation of the tabs
     function handleTabsOrientation() {
       return window.innerWidth < breakpoints.values.sm
         ? setTabsOrientation("vertical")
@@ -60,17 +52,48 @@ function Header() {
     return () => window.removeEventListener("resize", handleTabsOrientation);
   }, [tabsOrientation]);
 
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      if (currentUser) {
+        setUser(currentUser);
+      }
+    });
+
+    return () => unsubscribe();
+  }, []);
+
   const handleSetTabValue = (event, newValue) => setTabValue(newValue);
 
   return (
     <ArgonBox position="relative">
       <DashboardNavbar absolute light />
-      <ArgonBox height="220px" />
+      <ArgonBox
+        display="flex"
+        alignItems="center"
+        position="relative"
+        minHeight="18.75rem"
+        borderRadius="xl"
+        sx={{
+          backgroundImage: ({ functions: { rgba, linearGradient }, palette: { gradients } }) =>
+            `${linearGradient(
+              rgba(gradients.info.main, 0.6),
+              rgba(gradients.info.state, 0.6)
+            )}, url(${bgImage})`,
+          backgroundSize: "cover",
+          backgroundPosition: "50%",
+          overflow: "hidden",
+        }}
+      />
       <Card
         sx={{
+          backdropFilter: `saturate(200%) blur(30px)`,
+          backgroundColor: ({ functions: { rgba }, palette: { white } }) => rgba(white.main, 0.8),
+          boxShadow: ({ boxShadows: { navbarBoxShadow } }) => navbarBoxShadow,
+          position: "relative",
+          mt: -8,
+          mx: 3,
           py: 2,
           px: 2,
-          boxShadow: ({ boxShadows: { md } }) => md,
         }}
       >
         <Grid container spacing={3} alignItems="center">
@@ -86,42 +109,12 @@ function Header() {
           <Grid item>
             <ArgonBox height="100%" mt={0.5} lineHeight={1}>
               <ArgonTypography variant="h5" fontWeight="medium">
-                Alex Thompson
+                {user?.displayName}
               </ArgonTypography>
               <ArgonTypography variant="button" color="text" fontWeight="medium">
-                CEO / Co-Founder
+                {user?.email}
               </ArgonTypography>
             </ArgonBox>
-          </Grid>
-          <Grid item xs={12} md={6} lg={4} sx={{ ml: "auto" }}>
-            <AppBar position="static">
-              <Tabs orientation={tabsOrientation} value={tabValue} onChange={handleSetTabValue}>
-                <Tab
-                  label="App"
-                  icon={
-                    <i className="ni ni-app" style={{ marginTop: "6px", marginRight: "8px" }} />
-                  }
-                />
-                <Tab
-                  label="Message"
-                  icon={
-                    <i
-                      className="ni ni-email-83"
-                      style={{ marginTop: "6px", marginRight: "8px" }}
-                    />
-                  }
-                />
-                <Tab
-                  label="Settings"
-                  icon={
-                    <i
-                      className="ni ni-settings-gear-65"
-                      style={{ marginTop: "6px", marginRight: "8px" }}
-                    />
-                  }
-                />
-              </Tabs>
-            </AppBar>
           </Grid>
         </Grid>
       </Card>
