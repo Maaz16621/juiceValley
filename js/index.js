@@ -106,31 +106,112 @@ const addShimmerStyles = () => {
 };
 
 const createDealShimmer = () => {
-  const card = document.createElement("div");
-  card.className = "js-shimmer-card shimmer-deal-card";
-  card.innerHTML = `
-    <div style="display:grid;gap:12px;">
-      <div class="js-shimmer js-shimmer-block" style="width:100%;height:220px;"></div>
-      <div class="js-shimmer js-shimmer-block" style="width:60%;height:22px;"></div>
-      <div class="js-shimmer js-shimmer-block" style="width:40%;height:16px;"></div>
-    </div>
-  `;
+  const templateCard = document.querySelector("#deal-card");
+  if (!templateCard) {
+    return null;
+  }
+
+  const card = templateCard.cloneNode(true);
+  card.classList.add("rendered-deal-card", "shimmer-deal-card");
+  card.removeAttribute("id");
+  card.style.display = "block";
+
+  const imageWrap = card.querySelector(".featured-product-image-wrap") || card.querySelector(".featured-product-image-wrap, .featured-product-inner");
+  if (imageWrap) {
+    imageWrap.innerHTML = '<div class="js-shimmer js-shimmer-block" style="width:100%;height:220px;"></div>';
+  }
+
+  const nameEl = card.querySelector("#deal-name");
+  if (nameEl) {
+    nameEl.removeAttribute("id");
+    nameEl.textContent = "";
+    nameEl.classList.add("js-shimmer", "js-shimmer-block");
+    nameEl.style.width = "50%";
+    nameEl.style.height = "24px";
+  }
+
+  const descriptionEl = card.querySelector("#deal-description");
+  if (descriptionEl) {
+    descriptionEl.removeAttribute("id");
+    descriptionEl.textContent = "";
+    descriptionEl.classList.add("js-shimmer", "js-shimmer-block");
+    descriptionEl.style.width = "70%";
+    descriptionEl.style.height = "16px";
+  }
+
+  const priceEl = card.querySelector(".price-setting");
+  if (priceEl) {
+    priceEl.remove();
+  }
+
   return card;
 };
 
 const createProductShimmer = () => {
-  const slide = document.createElement("div");
-  slide.className = "w-slide rendered-product-slide shimmer-product-slide";
-  slide.style.padding = "12px";
-  slide.style.boxSizing = "border-box";
-  slide.innerHTML = `
-    <div style="display:grid; gap:12px; border-radius:20px; background:#fff; padding:18px; min-height:360px; box-shadow:0 10px 30px rgba(0,0,0,0.05);">
-      <div class="js-shimmer js-shimmer-block" style="width:100%; height:220px;"></div>
-      <div class="js-shimmer js-shimmer-block" style="width:55%; height:20px;"></div>
-      <div class="js-shimmer js-shimmer-block" style="width:40%; height:16px;"></div>
-      <div class="js-shimmer js-shimmer-block" style="width:80%; height:16px;"></div>
-    </div>
-  `;
+  const templateSlide = document.querySelector("#item-card")?.closest(".w-slide");
+  if (!templateSlide) {
+    return null;
+  }
+
+  const slide = templateSlide.cloneNode(true);
+  slide.classList.add("rendered-product-slide", "shimmer-product-slide");
+  slide.removeAttribute("aria-label");
+  slide.removeAttribute("role");
+  slide.style.opacity = "";
+  slide.style.transform = "";
+  slide.style.display = "block";
+
+  const card = slide.querySelector("#item-card");
+  if (card) {
+    card.removeAttribute("id");
+  }
+
+  const imageWrap = slide.querySelector(".product-image-wrap");
+  if (imageWrap) {
+    imageWrap.innerHTML = '<div class="js-shimmer js-shimmer-block" style="width:100%;height:220px;"></div>';
+  }
+
+  const title = slide.querySelector("#item-tittle");
+  if (title) {
+    title.removeAttribute("id");
+    title.textContent = "";
+    title.classList.add("js-shimmer", "js-shimmer-block");
+    title.style.width = "50%";
+    title.style.height = "20px";
+  }
+
+  const energy = slide.querySelector("#item-energy-value");
+  if (energy) {
+    energy.removeAttribute("id");
+    energy.textContent = "";
+    energy.classList.add("js-shimmer", "js-shimmer-block");
+    energy.style.width = "45%";
+    energy.style.height = "16px";
+  }
+
+  const desc = slide.querySelector("#item-description");
+  if (desc) {
+    desc.removeAttribute("id");
+    desc.textContent = "";
+    desc.classList.add("js-shimmer", "js-shimmer-block");
+    desc.style.width = "80%";
+    desc.style.height = "16px";
+  }
+
+  const ingredient = slide.querySelector("#item-ingredient");
+  if (ingredient) {
+    ingredient.removeAttribute("id");
+    ingredient.textContent = "";
+    ingredient.classList.add("js-shimmer", "js-shimmer-block");
+    ingredient.style.width = "70%";
+    ingredient.style.height = "16px";
+  }
+
+  const priceEl = slide.querySelector(".price-setting");
+  if (priceEl) {
+    priceEl.remove();
+  }
+
   return slide;
 };
 
@@ -241,6 +322,18 @@ const clearRenderedProducts = (mask) => {
   renderedSlides.forEach((slide) => slide.remove());
 };
 
+const hideInitialTemplates = () => {
+  const dealTemplate = document.querySelector("#deal-card");
+  if (dealTemplate) {
+    dealTemplate.style.display = "none";
+  }
+
+  const productTemplate = document.querySelector("#item-card")?.closest(".w-slide");
+  if (productTemplate) {
+    productTemplate.style.display = "none";
+  }
+};
+
 const createProductSlide = (product) => {
   const templateSlide = productTemplateSlide || document.querySelector("#item-card")?.closest(".w-slide");
   if (!templateSlide) {
@@ -335,6 +428,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     searchForm.addEventListener("submit", handleSearchSubmit);
   }
 
+  hideInitialTemplates();
   renderDealShimmers(3);
   renderProductShimmers(3);
 
