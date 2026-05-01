@@ -15,26 +15,6 @@ const normalizeImageUrl = (value) => {
   return `${STORAGE_BASE_URL}/${encodeURIComponent(value)}?alt=media`;
 };
 
-const STYLE_SHEET_NAME = "index.css";
-
-const getCurrentScriptDir = () => {
-  const currentScript = document.currentScript;
-  if (!currentScript || !currentScript.src) {
-    return "js/";
-  }
-  const scriptUrl = new URL(currentScript.src, window.location.href);
-  return scriptUrl.pathname.replace(/\/[^\/]*$/, "/");
-};
-
-const loadPageStyles = () => {
-  if (document.getElementById("js-index-styles")) return;
-  const link = document.createElement("link");
-  link.id = "js-index-styles";
-  link.rel = "stylesheet";
-  link.href = `${getCurrentScriptDir()}${STYLE_SHEET_NAME}`;
-  document.head.appendChild(link);
-};
-
 const showElement = (element, display = "block") => {
   if (!element) return;
   element.style.display = display;
@@ -105,7 +85,7 @@ const handleSearchSubmit = (event) => {
 };
 
 const addShimmerStyles = () => {
-  loadPageStyles();
+  // CSS is already loaded from the page head.
 };
 
 const createDealShimmer = () => {
