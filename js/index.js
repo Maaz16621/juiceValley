@@ -225,7 +225,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     heroTitle.textContent = "Welcome to Juice Valley";
   }
 
-  const searchForm = document.querySelector("form#wf-form-") || document.querySelector("form[name='wf-form-"]");
+  const searchForm = document.querySelector("form#wf-form-") || document.querySelector("form[name='wf-form-']");
   if (searchForm) {
     searchForm.addEventListener("submit", handleSearchSubmit);
   }
