@@ -344,19 +344,22 @@ const createProductSlide = (product) => {
   if (image) {
     image.removeAttribute("id");
     image.src = normalizeImageUrl(product.imageUrl || product.image || product.imagePath || product.imagePathName);
-    image.alt = product.title || product.name || "Product image";
+    image.alt = product.name || product.title || "Product image";
   }
 
   const title = slide.querySelector("#item-tittle");
   if (title) {
     title.removeAttribute("id");
-    title.textContent = product.title || product.name || "Untitled Product";
+    title.textContent = product.name || product.title || "Untitled Product";
   }
 
   const energy = slide.querySelector("#item-energy-value");
   if (energy) {
     energy.removeAttribute("id");
-    energy.textContent = product.subtitle || product.categoryName || "";
+    const category = product.categoryName && product.categoryName !== "N/A" ? product.categoryName : "";
+    const energyVal = product.energyValue ? `${product.energyValue} kcal` : "";
+    energy.textContent = [category, energyVal].filter(Boolean).join(" • ");
+    if (!energy.textContent) energy.style.display = "none";
   }
 
   const description = slide.querySelector("#item-description");
@@ -368,7 +371,12 @@ const createProductSlide = (product) => {
   const ingredient = slide.querySelector("#item-ingredient");
   if (ingredient) {
     ingredient.removeAttribute("id");
-    ingredient.textContent = product.ingredients || product.ingredientsList || "";
+    if (Array.isArray(product.ingredients)) {
+      ingredient.textContent = product.ingredients.join(", ");
+    } else {
+      ingredient.textContent = product.ingredients || product.ingredientsList || "";
+    }
+    if (!ingredient.textContent) ingredient.style.display = "none";
   }
 
   const priceEl = slide.querySelector(".price-setting");
