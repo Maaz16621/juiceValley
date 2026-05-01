@@ -23,23 +23,40 @@
   background-color: #f3f3f3;
 }
 
-.rendered-deal-card,
-.rendered-product-slide {
+.rendered-deal-card {
   display: block !important;
   opacity: 1 !important;
   visibility: visible !important;
-  transform: translateX(0px) !important;
   width: auto !important;
   min-width: 0 !important;
   max-width: 100% !important;
 }
 
+.rendered-product-slide {
+  display: inline-block !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  transform: translateX(0px) !important;
+  width: 280px !important;
+  margin-right: 16px !important;
+  vertical-align: top !important;
+  white-space: normal !important;
+}
+
+/* Ensure the slider mask allows horizontal scrolling/display */
+#item-list .w-slider-mask {
+  white-space: nowrap !important;
+  padding-left: 10px !important;
+  padding-right: 10px !important;
+  overflow: visible !important;
+}
+
 .shimmer-product-slide {
-  display: block !important;
+  /* Inherits from .rendered-product-slide */
 }
 
 .shimmer-deal-card {
-  display: block !important;
+  /* Inherits from .rendered-deal-card */
 }
 
 #deal-card,

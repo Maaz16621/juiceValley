@@ -141,11 +141,6 @@ const createProductShimmer = () => {
   slide.classList.add("rendered-product-slide", "shimmer-product-slide");
   slide.removeAttribute("aria-label");
   slide.removeAttribute("role");
-  slide.style.opacity = "1";
-  slide.style.transform = "translateX(0px)";
-  slide.style.width = "auto";
-  slide.style.minWidth = "0";
-  slide.style.maxWidth = "100%";
 
   const card = slide.querySelector("#item-card");
   if (card) {
@@ -338,8 +333,6 @@ const createProductSlide = (product) => {
   slide.classList.add("rendered-product-slide");
   slide.removeAttribute("aria-label");
   slide.removeAttribute("role");
-  slide.style.opacity = "1";
-  slide.style.transform = "translateX(0px)";
 
   const card = slide.querySelector("#item-card");
   if (card) {
