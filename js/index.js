@@ -114,9 +114,8 @@ const createDealShimmer = () => {
   const card = templateCard.cloneNode(true);
   card.classList.add("rendered-deal-card", "shimmer-deal-card");
   card.removeAttribute("id");
-  card.style.display = "block";
 
-  const imageWrap = card.querySelector(".featured-product-image-wrap") || card.querySelector(".featured-product-image-wrap, .featured-product-inner");
+  const imageWrap = card.querySelector(".featured-product-image-wrap") || card.querySelector(".featured-product-inner");
   if (imageWrap) {
     imageWrap.innerHTML = '<div class="js-shimmer js-shimmer-block" style="width:100%;height:220px;"></div>';
   }
@@ -157,9 +156,9 @@ const createProductShimmer = () => {
   slide.classList.add("rendered-product-slide", "shimmer-product-slide");
   slide.removeAttribute("aria-label");
   slide.removeAttribute("role");
-  slide.style.opacity = "";
-  slide.style.transform = "";
-  slide.style.display = "block";
+  slide.style.opacity = "1";
+  slide.style.transform = "translateX(0px)";
+  slide.style.display = "";
 
   const card = slide.querySelector("#item-card");
   if (card) {
@@ -233,15 +232,73 @@ const clearRenderedDealShimmers = (container) => {
   placeholderCards.forEach((card) => card.remove());
 };
 
+const setSlideToProductShimmer = (slide) => {
+  const imageWrap = slide.querySelector(".product-image-wrap");
+  if (imageWrap) {
+    imageWrap.innerHTML = '<div class="js-shimmer js-shimmer-block" style="width:100%;height:220px;"></div>';
+  }
+
+  const title = slide.querySelector("#item-tittle");
+  if (title) {
+    title.removeAttribute("id");
+    title.textContent = "";
+    title.classList.add("js-shimmer", "js-shimmer-block");
+    title.style.width = "50%";
+    title.style.height = "20px";
+  }
+
+  const energy = slide.querySelector("#item-energy-value");
+  if (energy) {
+    energy.removeAttribute("id");
+    energy.textContent = "";
+    energy.classList.add("js-shimmer", "js-shimmer-block");
+    energy.style.width = "45%";
+    energy.style.height = "16px";
+  }
+
+  const desc = slide.querySelector("#item-description");
+  if (desc) {
+    desc.removeAttribute("id");
+    desc.textContent = "";
+    desc.classList.add("js-shimmer", "js-shimmer-block");
+    desc.style.width = "80%";
+    desc.style.height = "16px";
+  }
+
+  const ingredient = slide.querySelector("#item-ingredient");
+  if (ingredient) {
+    ingredient.removeAttribute("id");
+    ingredient.textContent = "";
+    ingredient.classList.add("js-shimmer", "js-shimmer-block");
+    ingredient.style.width = "70%";
+    ingredient.style.height = "16px";
+  }
+
+  const priceEl = slide.querySelector(".price-setting");
+  if (priceEl) {
+    priceEl.remove();
+  }
+};
+
 const renderProductShimmers = (count = 3) => {
   const sliderMask = document.querySelector("#item-list .w-slider-mask");
-  if (!sliderMask) return;
+  const templateSlide = document.querySelector("#item-card")?.closest(".w-slide");
+  if (!sliderMask || !templateSlide) return;
+
+  if (!productTemplateSlide) {
+    productTemplateSlide = templateSlide.cloneNode(true);
+  }
 
   clearRenderedProducts(sliderMask);
   clearRenderedProductShimmers(sliderMask);
   addShimmerStyles();
 
-  for (let i = 0; i < count; i += 1) {
+  setSlideToProductShimmer(templateSlide);
+  templateSlide.style.display = "";
+  templateSlide.style.opacity = "1";
+  templateSlide.style.transform = "translateX(0px)";
+
+  for (let i = 1; i < count; i += 1) {
     sliderMask.appendChild(createProductShimmer());
   }
 };
@@ -307,7 +364,7 @@ const renderDeals = (deals) => {
   if (!dealTemplateCard) {
     dealTemplateCard = templateCard.cloneNode(true);
   }
-  templateCard.remove();
+  templateCard.style.display = "none";
 
   deals.forEach((deal) => {
     const card = createDealCard(deal);
@@ -323,15 +380,7 @@ const clearRenderedProducts = (mask) => {
 };
 
 const hideInitialTemplates = () => {
-  const dealTemplate = document.querySelector("#deal-card");
-  if (dealTemplate) {
-    dealTemplate.style.display = "none";
-  }
-
-  const productTemplate = document.querySelector("#item-card")?.closest(".w-slide");
-  if (productTemplate) {
-    productTemplate.style.display = "none";
-  }
+  // No-op: keep the existing product slider template active so the Webflow slider can display.
 };
 
 const createProductSlide = (product) => {
@@ -344,8 +393,9 @@ const createProductSlide = (product) => {
   slide.classList.add("rendered-product-slide");
   slide.removeAttribute("aria-label");
   slide.removeAttribute("role");
-  slide.style.opacity = "";
-  slide.style.transform = "";
+  slide.style.opacity = "1";
+  slide.style.transform = "translateX(0px)";
+  slide.style.display = "";
 
   const card = slide.querySelector("#item-card");
   if (card) {
@@ -391,6 +441,44 @@ const createProductSlide = (product) => {
   return slide;
 };
 
+const setSlideToProductData = (slide, product) => {
+  const image = slide.querySelector("#item-image");
+  if (image) {
+    image.removeAttribute("id");
+    image.src = normalizeImageUrl(product.imageUrl || product.image || product.imagePath || product.imagePathName);
+    image.alt = product.title || product.name || "Product image";
+  }
+
+  const title = slide.querySelector("#item-tittle");
+  if (title) {
+    title.removeAttribute("id");
+    title.textContent = product.title || product.name || "Untitled Product";
+  }
+
+  const energy = slide.querySelector("#item-energy-value");
+  if (energy) {
+    energy.removeAttribute("id");
+    energy.textContent = product.subtitle || product.categoryName || "";
+  }
+
+  const description = slide.querySelector("#item-description");
+  if (description) {
+    description.removeAttribute("id");
+    description.textContent = product.description || "";
+  }
+
+  const ingredient = slide.querySelector("#item-ingredient");
+  if (ingredient) {
+    ingredient.removeAttribute("id");
+    ingredient.textContent = product.ingredients || product.ingredientsList || "";
+  }
+
+  const priceEl = slide.querySelector(".price-setting");
+  if (priceEl) {
+    priceEl.remove();
+  }
+};
+
 const renderProducts = (products) => {
   const sliderMask = document.querySelector("#item-list .w-slider-mask");
   const templateSlide = document.querySelector("#item-card")?.closest(".w-slide");
@@ -400,19 +488,26 @@ const renderProducts = (products) => {
     return;
   }
 
-  clearRenderedProductShimmers(sliderMask);
-  clearRenderedProducts(sliderMask);
   if (!productTemplateSlide) {
     productTemplateSlide = templateSlide.cloneNode(true);
   }
-  templateSlide.remove();
 
-  products.forEach((product) => {
-    const slide = createProductSlide(product);
+  clearRenderedProductShimmers(sliderMask);
+  clearRenderedProducts(sliderMask);
+
+  if (products.length > 0) {
+    setSlideToProductData(templateSlide, products[0]);
+    templateSlide.style.display = "";
+    templateSlide.style.opacity = "1";
+    templateSlide.style.transform = "translateX(0px)";
+  }
+
+  for (let i = 1; i < products.length; i += 1) {
+    const slide = createProductSlide(products[i]);
     if (slide) {
       sliderMask.appendChild(slide);
     }
-  });
+  }
 };
 
 document.addEventListener("DOMContentLoaded", async () => {
