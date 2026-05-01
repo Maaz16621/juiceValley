@@ -100,6 +100,17 @@ const addShimmerStyles = () => {
     }
     .js-shimmer-block {
       border-radius: 12px;
+      display: block;
+      background-color: #f3f3f3;
+    }
+    .shimmer-product-slide,
+    .rendered-product-slide {
+      width: auto !important;
+      min-width: 0 !important;
+      max-width: 100% !important;
+      display: block !important;
+      opacity: 1 !important;
+      transform: translateX(0px) !important;
     }
   `;
   document.head.appendChild(style);
@@ -158,7 +169,10 @@ const createProductShimmer = () => {
   slide.removeAttribute("role");
   slide.style.opacity = "1";
   slide.style.transform = "translateX(0px)";
-  slide.style.display = "";
+  slide.style.display = "block";
+  slide.style.width = "auto";
+  slide.style.minWidth = "0";
+  slide.style.maxWidth = "100%";
 
   const card = slide.querySelector("#item-card");
   if (card) {
@@ -240,7 +254,6 @@ const setSlideToProductShimmer = (slide) => {
 
   const title = slide.querySelector("#item-tittle");
   if (title) {
-    title.removeAttribute("id");
     title.textContent = "";
     title.classList.add("js-shimmer", "js-shimmer-block");
     title.style.width = "50%";
@@ -249,7 +262,6 @@ const setSlideToProductShimmer = (slide) => {
 
   const energy = slide.querySelector("#item-energy-value");
   if (energy) {
-    energy.removeAttribute("id");
     energy.textContent = "";
     energy.classList.add("js-shimmer", "js-shimmer-block");
     energy.style.width = "45%";
@@ -258,7 +270,6 @@ const setSlideToProductShimmer = (slide) => {
 
   const desc = slide.querySelector("#item-description");
   if (desc) {
-    desc.removeAttribute("id");
     desc.textContent = "";
     desc.classList.add("js-shimmer", "js-shimmer-block");
     desc.style.width = "80%";
@@ -267,7 +278,6 @@ const setSlideToProductShimmer = (slide) => {
 
   const ingredient = slide.querySelector("#item-ingredient");
   if (ingredient) {
-    ingredient.removeAttribute("id");
     ingredient.textContent = "";
     ingredient.classList.add("js-shimmer", "js-shimmer-block");
     ingredient.style.width = "70%";
@@ -294,9 +304,12 @@ const renderProductShimmers = (count = 3) => {
   addShimmerStyles();
 
   setSlideToProductShimmer(templateSlide);
-  templateSlide.style.display = "";
+  templateSlide.style.display = "block";
   templateSlide.style.opacity = "1";
   templateSlide.style.transform = "translateX(0px)";
+  templateSlide.style.width = "auto";
+  templateSlide.style.minWidth = "0";
+  templateSlide.style.maxWidth = "100%";
 
   for (let i = 1; i < count; i += 1) {
     sliderMask.appendChild(createProductShimmer());
