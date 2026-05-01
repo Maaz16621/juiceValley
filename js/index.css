@@ -1,0 +1,48 @@
+@keyframes js-shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.js-shimmer {
+  background: linear-gradient(90deg, #f3f3f3 25%, #e8e8e8 50%, #f3f3f3 75%);
+  background-size: 200% 100%;
+  animation: js-shimmer 1.2s linear infinite;
+}
+
+.js-shimmer-card {
+  border-radius: 20px;
+  background-color: #fdfdfd;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.js-shimmer-block {
+  border-radius: 12px;
+  display: block;
+  background-color: #f3f3f3;
+}
+
+.rendered-deal-card,
+.rendered-product-slide {
+  display: block !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  transform: translateX(0px) !important;
+  width: auto !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+}
+
+.shimmer-product-slide {
+  display: block !important;
+}
+
+.shimmer-deal-card {
+  display: block !important;
+}
+
+#deal-card,
+#item-card {
+  display: none !important;
+}

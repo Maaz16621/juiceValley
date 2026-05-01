@@ -15,6 +15,34 @@ const normalizeImageUrl = (value) => {
   return `${STORAGE_BASE_URL}/${encodeURIComponent(value)}?alt=media`;
 };
 
+const STYLE_SHEET_NAME = "index.css";
+
+const getCurrentScriptDir = () => {
+  const currentScript = document.currentScript;
+  if (!currentScript || !currentScript.src) {
+    return "js/";
+  }
+  const scriptUrl = new URL(currentScript.src, window.location.href);
+  return scriptUrl.pathname.replace(/\/[^\/]*$/, "/");
+};
+
+const loadPageStyles = () => {
+  if (document.getElementById("js-index-styles")) return;
+  const link = document.createElement("link");
+  link.id = "js-index-styles";
+  link.rel = "stylesheet";
+  link.href = `${getCurrentScriptDir()}${STYLE_SHEET_NAME}`;
+  document.head.appendChild(link);
+};
+
+const showElement = (element, display = "block") => {
+  if (!element) return;
+  element.style.display = display;
+  element.style.opacity = "1";
+  element.style.visibility = "visible";
+  element.classList.remove("hidden", "w-hidden", "w-condition-invisible");
+};
+
 const fetchAllProducts = async () => {
   try {
     const response = await fetch(PRODUCTS_API_URL, {
@@ -77,43 +105,7 @@ const handleSearchSubmit = (event) => {
 };
 
 const addShimmerStyles = () => {
-  if (document.getElementById("js-shimmer-styles")) return;
-
-  const style = document.createElement("style");
-  style.id = "js-shimmer-styles";
-  style.textContent = `
-    @keyframes js-shimmer {
-      0% { background-position: -200% 0; }
-      100% { background-position: 200% 0; }
-    }
-    .js-shimmer {
-      background: linear-gradient(90deg, #f3f3f3 25%, #e8e8e8 50%, #f3f3f3 75%);
-      background-size: 200% 100%;
-      animation: js-shimmer 1.2s linear infinite;
-    }
-    .js-shimmer-card {
-      border-radius: 20px;
-      background-color: #fdfdfd;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-      padding: 20px;
-      margin-bottom: 20px;
-    }
-    .js-shimmer-block {
-      border-radius: 12px;
-      display: block;
-      background-color: #f3f3f3;
-    }
-    .shimmer-product-slide,
-    .rendered-product-slide {
-      width: auto !important;
-      min-width: 0 !important;
-      max-width: 100% !important;
-      display: block !important;
-      opacity: 1 !important;
-      transform: translateX(0px) !important;
-    }
-  `;
-  document.head.appendChild(style);
+  loadPageStyles();
 };
 
 const createDealShimmer = () => {
@@ -123,6 +115,7 @@ const createDealShimmer = () => {
   }
 
   const card = templateCard.cloneNode(true);
+  showElement(card);
   card.classList.add("rendered-deal-card", "shimmer-deal-card");
   card.removeAttribute("id");
 
@@ -164,18 +157,19 @@ const createProductShimmer = () => {
   }
 
   const slide = templateSlide.cloneNode(true);
+  showElement(slide, "block");
   slide.classList.add("rendered-product-slide", "shimmer-product-slide");
   slide.removeAttribute("aria-label");
   slide.removeAttribute("role");
   slide.style.opacity = "1";
   slide.style.transform = "translateX(0px)";
-  slide.style.display = "block";
   slide.style.width = "auto";
   slide.style.minWidth = "0";
   slide.style.maxWidth = "100%";
 
   const card = slide.querySelector("#item-card");
   if (card) {
+    showElement(card, "block");
     card.removeAttribute("id");
   }
 
@@ -304,9 +298,8 @@ const renderProductShimmers = (count = 3) => {
   addShimmerStyles();
 
   setSlideToProductShimmer(templateSlide);
-  templateSlide.style.display = "block";
-  templateSlide.style.opacity = "1";
-  templateSlide.style.transform = "translateX(0px)";
+  showElement(templateSlide, "block");
+  showElement(templateSlide.querySelector("#item-card"), "block");
   templateSlide.style.width = "auto";
   templateSlide.style.minWidth = "0";
   templateSlide.style.maxWidth = "100%";
@@ -333,6 +326,7 @@ const createDealCard = (deal) => {
   }
 
   const card = templateCard.cloneNode(true);
+  showElement(card);
   card.classList.add("rendered-deal-card");
   card.removeAttribute("id");
 
@@ -403,15 +397,16 @@ const createProductSlide = (product) => {
   }
 
   const slide = templateSlide.cloneNode(true);
+  showElement(slide, "block");
   slide.classList.add("rendered-product-slide");
   slide.removeAttribute("aria-label");
   slide.removeAttribute("role");
   slide.style.opacity = "1";
   slide.style.transform = "translateX(0px)";
-  slide.style.display = "";
 
   const card = slide.querySelector("#item-card");
   if (card) {
+    showElement(card, "block");
     card.removeAttribute("id");
   }
 
@@ -510,8 +505,8 @@ const renderProducts = (products) => {
 
   if (products.length > 0) {
     setSlideToProductData(templateSlide, products[0]);
-    templateSlide.style.display = "";
-    templateSlide.style.opacity = "1";
+    showElement(templateSlide, "block");
+    showElement(templateSlide.querySelector("#item-card"), "block");
     templateSlide.style.transform = "translateX(0px)";
   }
 
