@@ -137,7 +137,7 @@ const createProductShimmer = () => {
   }
 
   const slide = templateSlide.cloneNode(true);
-  showElement(slide, "block");
+  showElement(slide, "inline-block");
   slide.classList.add("rendered-product-slide", "shimmer-product-slide");
   slide.removeAttribute("aria-label");
   slide.removeAttribute("role");
@@ -329,7 +329,7 @@ const createProductSlide = (product) => {
   }
 
   const slide = templateSlide.cloneNode(true);
-  showElement(slide, "block");
+  showElement(slide, "inline-block");
   slide.classList.add("rendered-product-slide");
   slide.removeAttribute("aria-label");
   slide.removeAttribute("role");
