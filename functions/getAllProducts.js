@@ -1,10 +1,22 @@
+const functions = require("firebase-functions");
 const admin = require("firebase-admin");
 const { getDoc } = require("firebase-admin/firestore");
+
+const setCorsHeaders = (res) => {
+  res.set("Access-Control-Allow-Origin", "*");
+  res.set("Access-Control-Allow-Methods", "GET, OPTIONS");
+  res.set("Access-Control-Allow-Headers", "Content-Type");
+};
 
 /**
  * Fetches all products from Firestore and includes their category names.
  */
-const getAllProducts = async (req, res) => {
+const getAllProducts = functions.https.onRequest(async (req, res) => {
+  setCorsHeaders(res);
+  if (req.method === "OPTIONS") {
+    return res.status(204).send("");
+  }
+
   try {
     const productsCollection = admin.firestore().collection("products");
     const snapshot = await productsCollection.get();
@@ -29,10 +41,10 @@ const getAllProducts = async (req, res) => {
             // Keep categoryName as 'N/A' or handle as appropriate
           }
         }
-        // Ensure the structure matches frontend expectations
+
         return {
           ...product,
-          categoryName: categoryName,
+          categoryName,
         };
       })
     );
@@ -42,6 +54,6 @@ const getAllProducts = async (req, res) => {
     console.error("Error fetching products:", error);
     res.status(500).json({ message: "Failed to fetch products" });
   }
-};
+});
 
 module.exports = { getAllProducts };
