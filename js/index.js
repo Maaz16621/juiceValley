@@ -59,6 +59,9 @@ const fetchDeals = async () => {
   }
 };
 
+let productTemplateSlide = null;
+let dealTemplateCard = null;
+
 const handleSearchSubmit = (event) => {
   if (event) {
     event.preventDefault();
@@ -73,13 +76,107 @@ const handleSearchSubmit = (event) => {
   window.location.href = destination;
 };
 
+const addShimmerStyles = () => {
+  if (document.getElementById("js-shimmer-styles")) return;
+
+  const style = document.createElement("style");
+  style.id = "js-shimmer-styles";
+  style.textContent = `
+    @keyframes js-shimmer {
+      0% { background-position: -200% 0; }
+      100% { background-position: 200% 0; }
+    }
+    .js-shimmer {
+      background: linear-gradient(90deg, #f3f3f3 25%, #e8e8e8 50%, #f3f3f3 75%);
+      background-size: 200% 100%;
+      animation: js-shimmer 1.2s linear infinite;
+    }
+    .js-shimmer-card {
+      border-radius: 20px;
+      background-color: #fdfdfd;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+    .js-shimmer-block {
+      border-radius: 12px;
+    }
+  `;
+  document.head.appendChild(style);
+};
+
+const createDealShimmer = () => {
+  const card = document.createElement("div");
+  card.className = "js-shimmer-card shimmer-deal-card";
+  card.innerHTML = `
+    <div style="display:grid;gap:12px;">
+      <div class="js-shimmer js-shimmer-block" style="width:100%;height:220px;"></div>
+      <div class="js-shimmer js-shimmer-block" style="width:60%;height:22px;"></div>
+      <div class="js-shimmer js-shimmer-block" style="width:40%;height:16px;"></div>
+    </div>
+  `;
+  return card;
+};
+
+const createProductShimmer = () => {
+  const slide = document.createElement("div");
+  slide.className = "w-slide rendered-product-slide shimmer-product-slide";
+  slide.style.padding = "12px";
+  slide.style.boxSizing = "border-box";
+  slide.innerHTML = `
+    <div style="display:grid; gap:12px; border-radius:20px; background:#fff; padding:18px; min-height:360px; box-shadow:0 10px 30px rgba(0,0,0,0.05);">
+      <div class="js-shimmer js-shimmer-block" style="width:100%; height:220px;"></div>
+      <div class="js-shimmer js-shimmer-block" style="width:55%; height:20px;"></div>
+      <div class="js-shimmer js-shimmer-block" style="width:40%; height:16px;"></div>
+      <div class="js-shimmer js-shimmer-block" style="width:80%; height:16px;"></div>
+    </div>
+  `;
+  return slide;
+};
+
+const renderDealShimmers = (count = 3) => {
+  const container = document.querySelector(".featured-products-list");
+  if (!container) return;
+
+  clearRenderedDeals(container);
+  clearRenderedDealShimmers(container);
+  addShimmerStyles();
+
+  for (let i = 0; i < count; i += 1) {
+    container.appendChild(createDealShimmer());
+  }
+};
+
+const clearRenderedDealShimmers = (container) => {
+  const placeholderCards = container.querySelectorAll(".shimmer-deal-card");
+  placeholderCards.forEach((card) => card.remove());
+};
+
+const renderProductShimmers = (count = 3) => {
+  const sliderMask = document.querySelector("#item-list .w-slider-mask");
+  if (!sliderMask) return;
+
+  clearRenderedProducts(sliderMask);
+  clearRenderedProductShimmers(sliderMask);
+  addShimmerStyles();
+
+  for (let i = 0; i < count; i += 1) {
+    sliderMask.appendChild(createProductShimmer());
+  }
+};
+
+const clearRenderedProductShimmers = (mask) => {
+  const placeholderSlides = mask.querySelectorAll(".shimmer-product-slide");
+  placeholderSlides.forEach((slide) => slide.remove());
+};
+
 const clearRenderedDeals = (container) => {
   const renderedCards = container.querySelectorAll(".rendered-deal-card");
   renderedCards.forEach((card) => card.remove());
 };
 
 const createDealCard = (deal) => {
-  const templateCard = document.querySelector("#deal-card");
+  const templateCard = dealTemplateCard || document.querySelector("#deal-card");
   if (!templateCard) {
     return null;
   }
@@ -124,8 +221,12 @@ const renderDeals = (deals) => {
     return;
   }
 
+  clearRenderedDealShimmers(container);
   clearRenderedDeals(container);
-  templateCard.style.display = "none";
+  if (!dealTemplateCard) {
+    dealTemplateCard = templateCard.cloneNode(true);
+  }
+  templateCard.remove();
 
   deals.forEach((deal) => {
     const card = createDealCard(deal);
@@ -141,7 +242,7 @@ const clearRenderedProducts = (mask) => {
 };
 
 const createProductSlide = (product) => {
-  const templateSlide = document.querySelector("#item-card")?.closest(".w-slide");
+  const templateSlide = productTemplateSlide || document.querySelector("#item-card")?.closest(".w-slide");
   if (!templateSlide) {
     return null;
   }
@@ -206,8 +307,12 @@ const renderProducts = (products) => {
     return;
   }
 
+  clearRenderedProductShimmers(sliderMask);
   clearRenderedProducts(sliderMask);
-  templateSlide.style.display = "none";
+  if (!productTemplateSlide) {
+    productTemplateSlide = templateSlide.cloneNode(true);
+  }
+  templateSlide.remove();
 
   products.forEach((product) => {
     const slide = createProductSlide(product);
@@ -229,6 +334,9 @@ document.addEventListener("DOMContentLoaded", async () => {
   if (searchForm) {
     searchForm.addEventListener("submit", handleSearchSubmit);
   }
+
+  renderDealShimmers(3);
+  renderProductShimmers(3);
 
   const [products, deals] = await Promise.all([fetchAllProducts(), fetchDeals()]);
   console.log("Homepage data:", { products, deals });
