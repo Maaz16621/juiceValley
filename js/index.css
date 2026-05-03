@@ -1,4 +1,4 @@
-/* Animated Shimmer Effect */
+/* Shimmer Animation */
 @keyframes js-shimmer {
   0% { background-position: -200% 0; }
   100% { background-position: 200% 0; }
@@ -10,55 +10,60 @@
   animation: js-shimmer 1.2s linear infinite;
 }
 
-.js-shimmer-block {
-  border-radius: 12px;
-  display: block;
-  background-color: #f3f3f3;
-}
-
-/* Base horizontal layout for both shimmers and products */
+/* The Main Container */
 #item-list {
   display: flex !important;
-  flex-direction: row !important;
+  flex-direction: row !important; /* Row while loading shimmers */
   flex-wrap: nowrap !important;
   overflow-x: auto !important;
   gap: 20px;
-  padding: 20px 0 !important;
-  scrollbar-width: none;
   width: 100% !important;
+  padding: 20px 0;
+  scrollbar-width: none;
 }
 
-/* Reset layout once Owl Carousel is active so arrows/dots work */
+/* Once Owl is Loaded, switch to Column so Nav/Dots go below */
 #item-list.owl-loaded {
-  display: block !important; /* Owl handles its own flex internally */
+  display: flex !important;
+  flex-direction: column !important;
   overflow: visible !important;
 }
 
-#item-list::-webkit-scrollbar {
-  display: none;
+/* Viewport stays at the top */
+#item-list .owl-stage-outer {
+  order: 1; 
+  width: 100%;
 }
 
-/* Ensure cards have a consistent width */
+/* Navigation & Dots go below the items */
+#item-list .owl-nav {
+  order: 2;
+  display: flex;
+  justify-content: center;
+  margin-top: 15px;
+}
+
+#item-list .owl-dots {
+  order: 3;
+  margin-top: 10px;
+}
+
+/* Sizing for cards */
 .rendered-product-card, .shimmer-product-card {
-  flex: 0 0 280px !important; 
+  flex: 0 0 280px !important;
   width: 280px !important;
   display: block !important;
 }
 
-/* Owl Navigation Styling */
-.owl-nav {
-  margin-top: 20px;
-  text-align: center;
-}
+/* Hide the templates */
+#deal-card, #item-card { display: none !important; }
 
+/* Nice Arrow Buttons */
 .owl-nav button {
-  font-size: 24px !important;
-  background: #eee !important;
-  padding: 10px 20px !important;
-  border-radius: 8px;
-  margin: 0 10px;
-}
-
-#deal-card, #item-card {
-  display: none !important;
+  background: #f4f4f4 !important;
+  padding: 8px 20px !important;
+  border-radius: 50px !important;
+  margin: 0 5px;
+  color: #333 !important;
+  font-weight: bold;
 }
