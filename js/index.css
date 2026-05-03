@@ -9,67 +9,47 @@
   animation: js-shimmer 1.2s linear infinite;
 }
 
-.js-shimmer-card {
-  border-radius: 20px;
-  background-color: #fdfdfd;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
-  padding: 20px;
-  margin-bottom: 20px;
-}
-
 .js-shimmer-block {
   border-radius: 12px;
   display: block;
   background-color: #f3f3f3;
 }
 
-.rendered-deal-card {
+.rendered-deal-card,
+.rendered-product-card {
   display: block !important;
   opacity: 1 !important;
   visibility: visible !important;
-  width: auto !important;
-  min-width: 0 !important;
-  max-width: 100% !important;
 }
 
-.rendered-product-slide {
-  display: inline-block !important;
-  opacity: 1 !important;
-  visibility: visible !important;
-  transform: translateX(0px) !important;
-  width: 280px !important;
-  margin-right: 16px !important;
-  vertical-align: top !important;
-  white-space: normal !important;
-}
-
-/* Ensure the slider mask allows horizontal scrolling/display */
-#item-list .w-slider-mask {
-  white-space: nowrap !important;
-  padding-left: 50px !important; /* Increased padding to move cards away from arrows */
-  padding-right: 50px !important;
-  overflow-x: auto !important; /* Allow scrolling if there are many products */
-  overflow-y: hidden !important;
+/* Owl Carousel Customizations */
+#item-list.owl-carousel {
   display: block !important;
+  width: 100% !important;
+  padding: 0 40px; /* Leave space for nav arrows */
 }
 
-/* Hide scrollbar for a cleaner look while still allowing scroll */
-#item-list .w-slider-mask::-webkit-scrollbar {
-  display: none;
-}
-#item-list .w-slider-mask {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
-
-.shimmer-product-slide {
-  /* Inherits from .rendered-product-slide */
-}
-
-.shimmer-deal-card {
-  /* Inherits from .rendered-deal-card */
+#item-list .owl-nav button {
+  font-size: 30px;
+  background: rgba(255, 255, 255, 0.8) !important;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 }
 
+#item-list .owl-nav button.owl-prev {
+  left: -20px;
+}
+
+#item-list .owl-nav button.owl-next {
+  right: -20px;
+}
+
+/* Hide templates */
 #deal-card,
 #item-card {
   display: none !important;
