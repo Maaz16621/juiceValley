@@ -9,6 +9,14 @@ const normalizeImageUrl = (value) => {
   return `${STORAGE_BASE_URL}/${encodeURIComponent(value)}?alt=media`;
 };
 
+const showElement = (element, display = "block") => {
+  if (!element) return;
+  element.style.setProperty("display", display, "important");
+  element.style.setProperty("opacity", "1", "important");
+  element.style.setProperty("visibility", "visible", "important");
+  element.classList.remove("hidden", "w-hidden", "w-condition-invisible");
+};
+
 let productTemplateCard = null;
 let dealTemplateCard = null;
 
@@ -21,12 +29,12 @@ const renderProductShimmers = (count = 4) => {
   container.innerHTML = "";
   for (let i = 0; i < count; i++) {
     const card = productTemplateCard.cloneNode(true);
-    card.style.display = "block";
+    showElement(card, "block");
     card.removeAttribute("id");
     card.classList.add("shimmer-product-card");
     
     const imgWrap = card.querySelector(".product-image-wrap");
-    if (imgWrap) imgWrap.innerHTML = '<div class="js-shimmer" style="width:100%;height:200px;border-radius:12px"></div>';
+    if (imgWrap) imgWrap.innerHTML = '<div class="js-shimmer" style="width:100%;height:220px;"></div>';
     
     const title = card.querySelector("#item-tittle");
     if (title) {
@@ -34,6 +42,7 @@ const renderProductShimmers = (count = 4) => {
       title.classList.add("js-shimmer");
       title.style.height = "24px";
       title.style.width = "60%";
+      title.style.marginBottom = "10px";
     }
 
     const desc = card.querySelector("#item-description");
@@ -51,9 +60,6 @@ const renderProductShimmers = (count = 4) => {
     const energy = card.querySelector("#item-energy-value");
     if (energy) energy.style.display = "none";
 
-    const price = card.querySelector(".price-setting");
-    if (price) price.style.display = "none";
-    
     container.appendChild(card);
   }
 };
@@ -65,7 +71,7 @@ const renderProducts = (products) => {
   container.innerHTML = "";
   products.forEach((product) => {
     const card = productTemplateCard.cloneNode(true);
-    card.style.display = "block";
+    showElement(card, "block");
     card.removeAttribute("id");
     card.classList.add("rendered-product-card");
 
@@ -131,12 +137,14 @@ const renderDealShimmers = (count = 2) => {
   container.innerHTML = "";
   for (let i = 0; i < count; i++) {
     const card = dealTemplateCard.cloneNode(true);
-    card.style.display = "block";
+    showElement(card, "block");
     card.removeAttribute("id");
     card.classList.add("shimmer-deal-card");
 
-    const imgWrap = card.querySelector(".featured-product-image-wrap");
-    if (imgWrap) imgWrap.innerHTML = '<div class="js-shimmer" style="width:100%;height:300px;border-radius:12px"></div>';
+    const imgWrap = card.querySelector(".featured-product-image-wrap") || card.querySelector(".featured-product-inner");
+    if (imgWrap) {
+        imgWrap.innerHTML = '<div class="js-shimmer" style="width:100%;height:300px;display:block !important;"></div>';
+    }
 
     const name = card.querySelector("#deal-name");
     if (name) {
@@ -144,6 +152,7 @@ const renderDealShimmers = (count = 2) => {
       name.classList.add("js-shimmer");
       name.style.height = "30px";
       name.style.width = "70%";
+      name.style.display = "block !important";
     }
 
     const desc = card.querySelector("#deal-description");
@@ -153,6 +162,7 @@ const renderDealShimmers = (count = 2) => {
       desc.style.height = "20px";
       desc.style.width = "50%";
       desc.style.marginTop = "10px";
+      desc.style.display = "block !important";
     }
 
     container.appendChild(card);
@@ -166,7 +176,7 @@ const renderDeals = (deals) => {
   container.innerHTML = "";
   deals.forEach((deal) => {
     const card = dealTemplateCard.cloneNode(true);
-    card.style.display = "block";
+    showElement(card, "block");
     card.removeAttribute("id");
     card.classList.add("rendered-deal-card");
 
