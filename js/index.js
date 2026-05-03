@@ -17,9 +17,55 @@ const renderProductShimmers = (count = 4) => {
     card.removeAttribute("id");
     card.classList.add("shimmer-product-card");
     
-    // Add gray shimmer boxes
-    const img = card.querySelector(".product-image-wrap");
-    if (img) img.innerHTML = '<div class="js-shimmer" style="width:100%;height:200px;border-radius:12px"></div>';
+    // 1. Clear Image and add Shimmer
+    const imgWrap = card.querySelector(".product-image-wrap");
+    if (imgWrap) imgWrap.innerHTML = '<div class="js-shimmer" style="width:100%;height:200px;border-radius:12px"></div>';
+    
+    // 2. Clear Title and add Shimmer
+    const title = card.querySelector("#item-tittle");
+    if (title) {
+      title.textContent = "";
+      title.classList.add("js-shimmer");
+      title.style.height = "24px";
+      title.style.width = "60%";
+      title.style.marginBottom = "10px";
+    }
+
+    // 3. Clear Energy Value and add Shimmer
+    const energy = card.querySelector("#item-energy-value");
+    if (energy) {
+      energy.textContent = "";
+      energy.classList.add("js-shimmer");
+      energy.style.height = "16px";
+      energy.style.width = "40%";
+      energy.style.marginBottom = "10px";
+    }
+
+    // 4. Clear Description and add Shimmer
+    const desc = card.querySelector("#item-description");
+    if (desc) {
+      desc.textContent = "";
+      desc.classList.add("js-shimmer");
+      desc.style.height = "14px";
+      desc.style.width = "85%";
+      desc.style.marginBottom = "5px";
+    }
+
+    // 5. Clear Ingredient and add Shimmer
+    const ingredient = card.querySelector("#item-ingredient");
+    if (ingredient) {
+      ingredient.textContent = "";
+      ingredient.classList.add("js-shimmer");
+      ingredient.style.height = "14px";
+      ingredient.style.width = "70%";
+    }
+
+    // 6. Hide Price and Button during shimmer
+    const price = card.querySelector(".price-setting");
+    if (price) price.style.display = "none";
+    
+    const cartBtn = card.querySelector(".cart");
+    if (cartBtn) cartBtn.style.display = "none";
     
     container.appendChild(card);
   }
@@ -87,13 +133,14 @@ const renderProducts = (products) => {
     container.appendChild(card);
   });
 
-  // Init Owl
+  // Init Owl (Arrows Removed)
   if (typeof $.fn.owlCarousel === 'function') {
     $(container).addClass("owl-carousel owl-theme").owlCarousel({
       loop: products.length > 4,
       margin: 20,
-      nav: true,
+      nav: false,
       dots: true,
+      autoplay: true,
       responsive: { 0: { items: 1.2 }, 600: { items: 2.5 }, 1000: { items: 4 } }
     });
   }
