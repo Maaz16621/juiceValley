@@ -49,7 +49,6 @@ const renderProductShimmers = (count = 4) => {
     container.appendChild(card);
   }
 
-  // Init Carousel if Owl is loaded
   if (typeof $.fn.owlCarousel === 'function') {
     $(container).owlCarousel({
         loop: false, margin: 20, nav: false, dots: false,
@@ -62,7 +61,6 @@ const renderProducts = (products) => {
   const container = document.querySelector("#item-list");
   if (!container || !productTemplateCard) return;
 
-  // Destroy previous Owl
   if (typeof $.fn.owlCarousel === 'function' && $(container).data('owl.carousel')) {
     $(container).trigger("destroy.owl.carousel").removeClass("owl-loaded");
   }
@@ -78,9 +76,8 @@ const renderProducts = (products) => {
     const image = card.querySelector("#item-image");
     if (image) {
         image.src = normalizeImageUrl(product.imageUrl || product.image);
-        // Ensure image is hidden until loaded to prevent jumpy layout
         image.style.opacity = "0";
-        image.style.transition = "opacity 0.3s ease-in-out";
+        image.style.transition = "opacity 0.4s ease";
         image.onload = () => image.style.opacity = "1";
     }
 
@@ -93,17 +90,18 @@ const renderProducts = (products) => {
     container.appendChild(card);
   });
 
-  // Re-init Owl
-  if (typeof $.fn.owlCarousel === 'function') {
-    $(container).addClass("owl-carousel owl-theme").owlCarousel({
-        loop: products.length > 4,
-        margin: 20,
-        nav: true,
-        dots: true,
-        autoplay: true,
-        responsive: { 0: { items: 1.2 }, 600: { items: 2.5 }, 1000: { items: 4 } }
-    });
-  }
+  setTimeout(() => {
+    if (typeof $.fn.owlCarousel === 'function') {
+      $(container).addClass("owl-carousel owl-theme").owlCarousel({
+          loop: products.length > 4,
+          margin: 20,
+          nav: true,
+          dots: true,
+          autoplay: true,
+          responsive: { 0: { items: 1.2 }, 600: { items: 2.5 }, 1000: { items: 4 } }
+      });
+    }
+  }, 100);
 };
 
 document.addEventListener("DOMContentLoaded", async () => {

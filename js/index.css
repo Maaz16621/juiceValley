@@ -16,41 +16,49 @@
   background-color: #f3f3f3;
 }
 
-/* Force Horizontal Layout (Safety Net) */
+/* Base horizontal layout for both shimmers and products */
 #item-list {
   display: flex !important;
+  flex-direction: row !important;
   flex-wrap: nowrap !important;
   overflow-x: auto !important;
   gap: 20px;
-  padding: 10px 0;
-  scrollbar-width: none; /* Hide scrollbar for clean look */
+  padding: 20px 0 !important;
+  scrollbar-width: none;
+  width: 100% !important;
+}
+
+/* Reset layout once Owl Carousel is active so arrows/dots work */
+#item-list.owl-loaded {
+  display: block !important; /* Owl handles its own flex internally */
+  overflow: visible !important;
 }
 
 #item-list::-webkit-scrollbar {
   display: none;
 }
 
-/* Make sure items don't shrink */
+/* Ensure cards have a consistent width */
 .rendered-product-card, .shimmer-product-card {
-  flex: 0 0 280px !important; /* Forces cards to be 280px wide */
+  flex: 0 0 280px !important; 
+  width: 280px !important;
   display: block !important;
-  opacity: 1 !important;
-  visibility: visible !important;
 }
 
-/* Fix Owl Carousel override */
-.owl-carousel .owl-stage {
-  display: flex !important;
+/* Owl Navigation Styling */
+.owl-nav {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.owl-nav button {
+  font-size: 24px !important;
+  background: #eee !important;
+  padding: 10px 20px !important;
+  border-radius: 8px;
+  margin: 0 10px;
 }
 
 #deal-card, #item-card {
   display: none !important;
-}
-
-/* Shimmer Card specific adjustments */
-.js-shimmer-card {
-  background: #fff;
-  border-radius: 12px;
-  padding: 15px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
 }
