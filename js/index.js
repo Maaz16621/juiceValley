@@ -48,7 +48,41 @@ const renderProducts = (products) => {
     }
 
     const title = card.querySelector("#item-tittle");
-    if (title) title.textContent = product.name || "Product";
+    if (title) title.textContent = product.name || "Untitled Product";
+
+    const energy = card.querySelector("#item-energy-value");
+    if (energy) {
+      const category = product.categoryName && product.categoryName !== "N/A" ? product.categoryName : "";
+      const energyVal = product.energyValue ? `${product.energyValue} kcal` : "";
+      energy.textContent = [category, energyVal].filter(Boolean).join(" • ");
+      if (!energy.textContent) energy.style.display = "none";
+    }
+
+    const description = card.querySelector("#item-description");
+    if (description) {
+      description.textContent = product.description || "";
+      if (!description.textContent) description.style.display = "none";
+    }
+
+    const ingredient = card.querySelector("#item-ingredient");
+    if (ingredient) {
+      if (Array.isArray(product.ingredients)) {
+        ingredient.textContent = product.ingredients.join(", ");
+      } else {
+        ingredient.textContent = product.ingredients || "";
+      }
+      if (!ingredient.textContent) ingredient.style.display = "none";
+    }
+
+    const priceEl = card.querySelector(".price-setting");
+    if (priceEl) {
+      if (product.price > 0) {
+        priceEl.textContent = `$${product.price.toFixed(2)}`;
+        priceEl.style.display = "block";
+      } else {
+        priceEl.style.display = "none";
+      }
+    }
 
     container.appendChild(card);
   });

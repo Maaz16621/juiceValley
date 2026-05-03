@@ -33,6 +33,7 @@
 #item-list .owl-stage-outer {
   order: 1; 
   width: 100%;
+  display: flex !important;
 }
 
 /* Navigation & Dots go below the items */
