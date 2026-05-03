@@ -13,7 +13,7 @@
 /* The Main Container */
 #item-list {
   display: flex !important;
-  flex-direction: row !important; /* Row while loading shimmers */
+  flex-direction: row !important;
   flex-wrap: nowrap !important;
   overflow-x: auto !important;
   gap: 20px;
@@ -22,33 +22,38 @@
   scrollbar-width: none;
 }
 
-/* Once Owl is Loaded, switch to Column so Nav/Dots go below */
 #item-list.owl-loaded {
   display: flex !important;
   flex-direction: column !important;
   overflow: visible !important;
 }
 
-/* Viewport stays at the top */
 #item-list .owl-stage-outer {
   order: 1; 
   width: 100%;
 }
 
-.owl-stage {
-  display: flex !important;
-}
-/* Navigation & Dots go below the items */
-#item-list .owl-nav {
+#item-list .owl-dots {
   order: 2;
-  display: flex;
-  justify-content: center;
   margin-top: 15px;
 }
 
-#item-list .owl-dots {
-  order: 3;
-  margin-top: 10px;
+/* Explicitly Hide Arrows */
+.owl-nav {
+  display: none !important;
+}
+
+/* Ingredients Chip UI */
+.ingredient-tag {
+  display: inline-block;
+  background: #f0f0f0;
+  color: #555;
+  padding: 4px 10px;
+  border-radius: 50px;
+  font-size: 11px;
+  margin-right: 6px;
+  margin-bottom: 6px;
+  text-transform: capitalize;
 }
 
 /* Sizing for cards */
@@ -58,15 +63,14 @@
   display: block !important;
 }
 
-/* Hide the templates */
+/* Deal Cards Shimmer */
+.shimmer-deal-card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+
 #deal-card, #item-card { display: none !important; }
 
-/* Nice Arrow Buttons */
-.owl-nav button {
-  background: #f4f4f4 !important;
-  padding: 8px 20px !important;
-  border-radius: 50px !important;
-  margin: 0 5px;
-  color: #333 !important;
-  font-weight: bold;
-}
+/* Templates */
+.price-setting { display: none !important; }

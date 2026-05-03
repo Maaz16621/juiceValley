@@ -1,8 +1,16 @@
 const FUNCTIONS_BASE_URL = "https://us-central1-juicevalley-33052.cloudfunctions.net";
 const STORAGE_BASE_URL = "https://firebasestorage.googleapis.com/v0/b/juicevalley-33052.appspot.com/o";
 const PRODUCTS_API_URL = `${FUNCTIONS_BASE_URL}/getAllProducts`;
+const DEALS_API_URL = `${FUNCTIONS_BASE_URL}/getDeals`;
+
+const normalizeImageUrl = (value) => {
+  if (!value) return "";
+  if (/^https?:\/\//i.test(value)) return value;
+  return `${STORAGE_BASE_URL}/${encodeURIComponent(value)}?alt=media`;
+};
 
 let productTemplateCard = null;
+let dealTemplateCard = null;
 
 const renderProductShimmers = (count = 4) => {
   const container = document.querySelector("#item-list");
@@ -17,55 +25,34 @@ const renderProductShimmers = (count = 4) => {
     card.removeAttribute("id");
     card.classList.add("shimmer-product-card");
     
-    // 1. Clear Image and add Shimmer
     const imgWrap = card.querySelector(".product-image-wrap");
     if (imgWrap) imgWrap.innerHTML = '<div class="js-shimmer" style="width:100%;height:200px;border-radius:12px"></div>';
     
-    // 2. Clear Title and add Shimmer
     const title = card.querySelector("#item-tittle");
     if (title) {
       title.textContent = "";
       title.classList.add("js-shimmer");
       title.style.height = "24px";
       title.style.width = "60%";
-      title.style.marginBottom = "10px";
     }
 
-    // 3. Clear Energy Value and add Shimmer
-    const energy = card.querySelector("#item-energy-value");
-    if (energy) {
-      energy.textContent = "";
-      energy.classList.add("js-shimmer");
-      energy.style.height = "16px";
-      energy.style.width = "40%";
-      energy.style.marginBottom = "10px";
-    }
-
-    // 4. Clear Description and add Shimmer
     const desc = card.querySelector("#item-description");
     if (desc) {
       desc.textContent = "";
       desc.classList.add("js-shimmer");
-      desc.style.height = "14px";
-      desc.style.width = "85%";
-      desc.style.marginBottom = "5px";
+      desc.style.height = "16px";
+      desc.style.width = "80%";
+      desc.style.marginTop = "10px";
     }
-
-    // 5. Clear Ingredient and add Shimmer
+    
     const ingredient = card.querySelector("#item-ingredient");
-    if (ingredient) {
-      ingredient.textContent = "";
-      ingredient.classList.add("js-shimmer");
-      ingredient.style.height = "14px";
-      ingredient.style.width = "70%";
-    }
+    if (ingredient) ingredient.style.display = "none";
+    
+    const energy = card.querySelector("#item-energy-value");
+    if (energy) energy.style.display = "none";
 
-    // 6. Hide Price and Button during shimmer
     const price = card.querySelector(".price-setting");
     if (price) price.style.display = "none";
-    
-    const cartBtn = card.querySelector(".cart");
-    if (cartBtn) cartBtn.style.display = "none";
     
     container.appendChild(card);
   }
@@ -75,9 +62,7 @@ const renderProducts = (products) => {
   const container = document.querySelector("#item-list");
   if (!container || !productTemplateCard) return;
 
-  // Clear container
   container.innerHTML = "";
-
   products.forEach((product) => {
     const card = productTemplateCard.cloneNode(true);
     card.style.display = "block";
@@ -86,8 +71,7 @@ const renderProducts = (products) => {
 
     const image = card.querySelector("#item-image");
     if (image) {
-      const imgUrl = product.imageUrl || product.image || "";
-      image.src = imgUrl.startsWith('http') ? imgUrl : `${STORAGE_BASE_URL}/${encodeURIComponent(imgUrl)}?alt=media`;
+      image.src = normalizeImageUrl(product.imageUrl || product.image);
       image.style.opacity = "0";
       image.onload = () => image.style.opacity = "1";
       image.style.transition = "opacity 0.5s";
@@ -98,10 +82,9 @@ const renderProducts = (products) => {
 
     const energy = card.querySelector("#item-energy-value");
     if (energy) {
-      const category = product.categoryName && product.categoryName !== "N/A" ? product.categoryName : "";
       const energyVal = product.energyValue ? `${product.energyValue} kcal` : "";
-      energy.textContent = [category, energyVal].filter(Boolean).join(" • ");
-      if (!energy.textContent) energy.style.display = "none";
+      energy.textContent = energyVal;
+      if (!energyVal) energy.style.display = "none";
     }
 
     const description = card.querySelector("#item-description");
@@ -110,30 +93,23 @@ const renderProducts = (products) => {
       if (!description.textContent) description.style.display = "none";
     }
 
-    const ingredient = card.querySelector("#item-ingredient");
-    if (ingredient) {
-      if (Array.isArray(product.ingredients)) {
-        ingredient.textContent = product.ingredients.join(", ");
-      } else {
-        ingredient.textContent = product.ingredients || "";
-      }
-      if (!ingredient.textContent) ingredient.style.display = "none";
-    }
-
-    const priceEl = card.querySelector(".price-setting");
-    if (priceEl) {
-      if (product.price > 0) {
-        priceEl.textContent = `$${product.price.toFixed(2)}`;
-        priceEl.style.display = "block";
-      } else {
-        priceEl.style.display = "none";
-      }
+    const ingredientContainer = card.querySelector("#item-ingredient");
+    if (ingredientContainer) {
+      ingredientContainer.innerHTML = "";
+      const ingredients = Array.isArray(product.ingredients) ? product.ingredients : (product.ingredients ? product.ingredients.split(",") : []);
+      ingredients.forEach(ing => {
+        if (ing.trim()) {
+          const span = document.createElement("span");
+          span.className = "ingredient-tag";
+          span.textContent = ing.trim();
+          ingredientContainer.appendChild(span);
+        }
+      });
     }
 
     container.appendChild(card);
   });
 
-  // Init Owl (Arrows Removed)
   if (typeof $.fn.owlCarousel === 'function') {
     $(container).addClass("owl-carousel owl-theme").owlCarousel({
       loop: products.length > 4,
@@ -146,11 +122,84 @@ const renderProducts = (products) => {
   }
 };
 
+const renderDealShimmers = (count = 2) => {
+  const container = document.querySelector(".featured-products-list");
+  const templateCard = document.querySelector("#deal-card");
+  if (!container || !templateCard) return;
+  if (!dealTemplateCard) dealTemplateCard = templateCard.cloneNode(true);
+
+  container.innerHTML = "";
+  for (let i = 0; i < count; i++) {
+    const card = dealTemplateCard.cloneNode(true);
+    card.style.display = "block";
+    card.removeAttribute("id");
+    card.classList.add("shimmer-deal-card");
+
+    const imgWrap = card.querySelector(".featured-product-image-wrap");
+    if (imgWrap) imgWrap.innerHTML = '<div class="js-shimmer" style="width:100%;height:300px;border-radius:12px"></div>';
+
+    const name = card.querySelector("#deal-name");
+    if (name) {
+      name.textContent = "";
+      name.classList.add("js-shimmer");
+      name.style.height = "30px";
+      name.style.width = "70%";
+    }
+
+    const desc = card.querySelector("#deal-description");
+    if (desc) {
+      desc.textContent = "";
+      desc.classList.add("js-shimmer");
+      desc.style.height = "20px";
+      desc.style.width = "50%";
+      desc.style.marginTop = "10px";
+    }
+
+    container.appendChild(card);
+  }
+};
+
+const renderDeals = (deals) => {
+  const container = document.querySelector(".featured-products-list");
+  if (!container || !dealTemplateCard) return;
+
+  container.innerHTML = "";
+  deals.forEach((deal) => {
+    const card = dealTemplateCard.cloneNode(true);
+    card.style.display = "block";
+    card.removeAttribute("id");
+    card.classList.add("rendered-deal-card");
+
+    const image = card.querySelector("#deal-image");
+    if (image) {
+      image.src = normalizeImageUrl(deal.imageUrl || deal.image);
+    }
+
+    const name = card.querySelector("#deal-name");
+    if (name) name.textContent = deal.title || deal.name || "Special Deal";
+
+    const description = card.querySelector("#deal-description");
+    if (description) description.textContent = deal.description || "";
+
+    container.appendChild(card);
+  });
+};
+
 document.addEventListener("DOMContentLoaded", async () => {
   renderProductShimmers(4);
+  renderDealShimmers(2);
+
   try {
-    const res = await fetch(PRODUCTS_API_URL);
-    const data = await res.json();
-    if (data && data.length > 0) renderProducts(data);
-  } catch (e) { console.error(e); }
+    const [productsRes, dealsRes] = await Promise.all([
+      fetch(PRODUCTS_API_URL),
+      fetch(DEALS_API_URL)
+    ]);
+    const products = await productsRes.json();
+    const deals = await dealsRes.json();
+
+    if (products && products.length > 0) renderProducts(products);
+    if (deals && deals.length > 0) renderDeals(deals);
+  } catch (e) {
+    console.error("Data load failed", e);
+  }
 });
