@@ -1,3 +1,4 @@
+/* Animated Shimmer Effect */
 @keyframes js-shimmer {
   0% { background-position: -200% 0; }
   100% { background-position: 200% 0; }
@@ -15,42 +16,41 @@
   background-color: #f3f3f3;
 }
 
-.rendered-deal-card,
-.rendered-product-card {
+/* Force Horizontal Layout (Safety Net) */
+#item-list {
+  display: flex !important;
+  flex-wrap: nowrap !important;
+  overflow-x: auto !important;
+  gap: 20px;
+  padding: 10px 0;
+  scrollbar-width: none; /* Hide scrollbar for clean look */
+}
+
+#item-list::-webkit-scrollbar {
+  display: none;
+}
+
+/* Make sure items don't shrink */
+.rendered-product-card, .shimmer-product-card {
+  flex: 0 0 280px !important; /* Forces cards to be 280px wide */
   display: block !important;
   opacity: 1 !important;
   visibility: visible !important;
 }
 
-/* Owl Carousel Customizations */
-#item-list.owl-carousel {
-  display: block !important;
-  width: 100% !important;
-  padding: 0 40px; /* Leave space for nav arrows */
+/* Fix Owl Carousel override */
+.owl-carousel .owl-stage {
+  display: flex !important;
 }
 
-#item-list .owl-nav button {
-  font-size: 30px;
-  background: rgba(255, 255, 255, 0.8) !important;
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-}
-
-#item-list .owl-nav button.owl-prev {
-  left: -20px;
-}
-
-#item-list .owl-nav button.owl-next {
-  right: -20px;
-}
-
-/* Hide templates */
-#deal-card,
-#item-card {
+#deal-card, #item-card {
   display: none !important;
+}
+
+/* Shimmer Card specific adjustments */
+.js-shimmer-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 15px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
 }
