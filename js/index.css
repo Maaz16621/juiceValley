@@ -128,6 +128,48 @@
   opacity: 1 !important;
 }
 
+/* Menu Selectors */
+.menu-fillter {
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 1px solid transparent;
+  padding: 10px;
+  border-radius: 8px;
+}
+
+.menu-fillter:hover {
+  background: #f8f8f8;
+}
+
+.menu-fillter.active {
+  background: #3c9242;
+  color: white !important;
+}
+
+.menu-fillter.active .text-color-black,
+.menu-fillter.active .text-size-medium {
+  color: white !important;
+}
+
+.menu-fillter.active img {
+  filter: brightness(0) invert(1);
+}
+
+/* Shimmer refinements for Menu Grid */
+.shimmer-product-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 12px;
+    border: 1px solid #eee;
+    display: flex;
+    flex-direction: column;
+}
+
+.shimmer-product-card .js-shimmer {
+    background: linear-gradient(90deg, #f0f0f0 25%, #e8e8e8 50%, #f0f0f0 75%) !important;
+    background-size: 200% 100% !important;
+}
+
 /* Hide Templates */
 #deal-card, #item-card, .price-setting {
   display: none !important;
