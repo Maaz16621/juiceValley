@@ -19,6 +19,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         return;
     }
 
+    renderShimmers();
+
     try {
         const response = await fetch(`${PRODUCTS_API_URL}?id=${productId}`);
         if (!response.ok) {
@@ -35,23 +37,66 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 });
 
+function renderShimmers() {
+    const name = document.querySelector("#item-name");
+    if (name) {
+        name.textContent = "";
+        name.classList.add("js-shimmer");
+        name.style.height = "40px";
+        name.style.width = "80%";
+    }
+
+    const description = document.querySelector("#item-description");
+    if (description) {
+        description.textContent = "";
+        description.classList.add("js-shimmer");
+        description.style.height = "100px";
+        description.style.width = "100%";
+    }
+
+    const image = document.querySelector("#item-image");
+    if (image) {
+        image.classList.add("js-shimmer");
+        image.src = "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"; // Transparent pixel
+    }
+
+    const sizePicker = document.querySelector("#size-picker");
+    if (sizePicker) sizePicker.style.visibility = "hidden";
+}
+
 function renderProductDetails(product) {
     // Populate Image
     const image = document.querySelector("#item-image");
     if (image) {
+        image.classList.remove("js-shimmer");
         image.removeAttribute("srcset");
         image.removeAttribute("sizes");
         image.srcset = "";
+        image.classList.add("img-loading");
+        image.onload = () => image.classList.replace("img-loading", "img-loaded");
         image.src = normalizeImageUrl(product.imageUrl || product.image);
     }
 
     // Populate Name
     const name = document.querySelector("#item-name");
-    if (name) name.textContent = product.name || "Untitled Product";
+    if (name) {
+        name.classList.remove("js-shimmer");
+        name.style.height = "auto";
+        name.style.width = "auto";
+        name.textContent = product.name || "Untitled Product";
+    }
 
     // Populate Description
     const description = document.querySelector("#item-description");
-    if (description) description.textContent = product.description || "";
+    if (description) {
+        description.classList.remove("js-shimmer");
+        description.style.height = "auto";
+        description.textContent = product.description || "";
+    }
+
+    // Show Size Picker
+    const sizePicker = document.querySelector("#size-picker");
+    if (sizePicker) sizePicker.style.visibility = "visible";
 
     // Populate Ingredients
     const ingredientsList = document.querySelector("#item-ingredients");

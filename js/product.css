@@ -1,0 +1,61 @@
+/* Product Details Page Styles */
+
+/* Shimmer Animation (copied for standalone use) */
+@keyframes js-shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.js-shimmer {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%) !important;
+  background-size: 200% 100% !important;
+  animation: js-shimmer 1.5s linear infinite !important;
+  display: block !important;
+  border-radius: 8px;
+}
+
+/* Hero Image Styles */
+#item-image {
+  width: 100%;
+  object-fit: cover;
+  border-radius: 8px;
+  /* Dark overlay for readability */
+  background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3));
+  background-blend-mode: overlay;
+  filter: brightness(0.85);
+  transition: opacity 0.3s ease;
+}
+
+.img-loading {
+  opacity: 0 !important;
+}
+
+.img-loaded {
+  opacity: 1 !important;
+}
+
+/* Size Picker Styles */
+.size-picker {
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.size-picker.is-active {
+    background-color: #3c9242 !important;
+    border-color: #3c9242 !important;
+}
+
+.size-picker.is-active .text-size-medium {
+    color: white !important;
+}
+
+/* Ingredients List */
+#item-ingredients {
+    padding-left: 20px;
+    margin-top: 10px;
+}
+
+#item-ingredients li {
+    margin-bottom: 8px;
+    color: #444;
+}
