@@ -222,7 +222,12 @@ function Deals() {
       headerName: "Image",
       width: 100,
       renderCell: (params) => (
-        <ArgonAvatar src={params.value} alt={params.row.title} size="sm" />
+        <ArgonAvatar 
+          src={params.value || "https://via.placeholder.com/100x100?text=Deal"} 
+          alt={params.row.title} 
+          size="md" 
+          variant="rounded"
+        />
       ),
       sortable: false,
     },
@@ -499,11 +504,13 @@ function Deals() {
                     Upload Image
                   </ArgonButton>
                 </label>
-                {imagePreview && (
-                    <ArgonBox mt={1} textAlign="center">
-                        <img src={imagePreview} alt="Preview" style={{ maxWidth: '100%', maxHeight: '100px', borderRadius: '8px', objectFit: 'contain' }} />
-                    </ArgonBox>
-                )}
+                <ArgonBox mt={1} textAlign="center">
+                    <img 
+                      src={imagePreview || "https://via.placeholder.com/400x300?text=No+Deal+Image"} 
+                      alt="Preview" 
+                      style={{ maxWidth: '100%', maxHeight: '100px', borderRadius: '8px', objectFit: 'contain' }} 
+                    />
+                </ArgonBox>
               </ArgonBox>
             </Grid>
           </Grid>

@@ -254,16 +254,14 @@ function ProductForm({ open, onClose, onSave, product }) {
                   <Icon>upload</Icon>&nbsp; Upload Image
                   <input type="file" hidden onChange={handleImageChange} />
                 </ArgonButton>
-                {imageUrl && (
-                  <ArgonBox
-                    component="img"
-                    src={imageUrl}
-                    alt="Preview"
-                    width="60px"
-                    height="60px"
-                    sx={{ objectFit: "cover", borderRadius: "8px", border: "1px solid #ddd" }}
-                  />
-                )}
+                <ArgonBox
+                  component="img"
+                  src={imageUrl || "https://via.placeholder.com/100x100?text=No+Image"}
+                  alt="Preview"
+                  width="60px"
+                  height="60px"
+                  sx={{ objectFit: "cover", borderRadius: "8px", border: "1px solid #ddd" }}
+                />
               </ArgonBox>
             </Grid>
           </Grid>

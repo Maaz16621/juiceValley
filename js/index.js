@@ -1,10 +1,11 @@
 const FUNCTIONS_BASE_URL = "https://us-central1-juicevalley-33052.cloudfunctions.net";
-const STORAGE_BASE_URL = "https://firebasestorage.googleapis.com/v0/b/juicevalley-33052.appspot.com/o";
+const STORAGE_BASE_URL = "https://firebasestorage.googleapis.com/v0/b/juicevalley-33052.firebasestorage.app/o";
 const PRODUCTS_API_URL = `${FUNCTIONS_BASE_URL}/getAllProducts`;
 const DEALS_API_URL = `${FUNCTIONS_BASE_URL}/getDeals`;
+const PLACEHOLDER_IMAGE = "https://via.placeholder.com/400x300?text=Juice+Valley";
 
 const normalizeImageUrl = (value) => {
-  if (!value) return "";
+  if (!value) return PLACEHOLDER_IMAGE;
   if (/^https?:\/\//i.test(value)) return value;
   return `${STORAGE_BASE_URL}/${encodeURIComponent(value)}?alt=media`;
 };
@@ -183,6 +184,9 @@ const renderDeals = (deals) => {
     const image = card.querySelector("#deal-image");
     if (image) {
       image.src = normalizeImageUrl(deal.imageUrl || deal.image);
+      image.style.opacity = "0";
+      image.onload = () => image.style.opacity = "1";
+      image.style.transition = "opacity 0.5s";
     }
 
     const name = card.querySelector("#deal-name");

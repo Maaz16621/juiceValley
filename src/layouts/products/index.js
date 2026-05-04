@@ -136,7 +136,12 @@ function Products() {
       headerName: "Image",
       width: 100,
       renderCell: (params) => (
-        <ArgonAvatar src={params.value} alt={params.row.name} size="sm" />
+        <ArgonAvatar 
+          src={params.value || "https://via.placeholder.com/100x100?text=Juice"} 
+          alt={params.row.name} 
+          size="md" 
+          variant="rounded"
+        />
       ),
       sortable: false,
     },
