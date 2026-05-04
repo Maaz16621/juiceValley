@@ -94,7 +94,6 @@ const renderProducts = (products) => {
       image.removeAttribute("srcset");
       image.removeAttribute("sizes");
       image.srcset = "";
-      image.crossOrigin = "anonymous";
       image.src = normalizeImageUrl(product.imageUrl || product.image);
     }
 
@@ -203,7 +202,6 @@ const renderDeals = (deals) => {
       image.removeAttribute("srcset");
       image.removeAttribute("sizes");
       image.srcset = "";
-      image.crossOrigin = "anonymous";
       image.src = normalizeImageUrl(deal.imageUrl || deal.image);
     }
 
