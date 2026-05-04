@@ -131,39 +131,6 @@ const renderProducts = (products) => {
   });
 };
 
-  products.forEach((product) => {
-    const card = productTemplateCard.cloneNode(true);
-    showElement(card, "flex");
-    card.removeAttribute("id");
-    card.classList.add("rendered-product-card");
-    card.href = `/product?id=${product.id}`;
-
-    const image = card.querySelector("#item-image img");
-    if (image) {
-      image.classList.add("img-loading");
-      image.onload = () => image.classList.replace("img-loading", "img-loaded");
-      image.src = normalizeImageUrl(product.imageUrl || product.image);
-    }
-
-    const title = card.querySelector("#item-name");
-    if (title) title.textContent = product.name || "Untitled";
-
-    const energy = card.querySelector("#item-energy-value");
-    if (energy) {
-      energy.textContent = product.energyValue ? `${product.energyValue} kcal` : "";
-      if (!energy.textContent) energy.style.display = "none";
-    }
-
-    const description = card.querySelector("#item-description");
-    if (description) {
-      description.textContent = product.description || "";
-      if (!description.textContent) description.style.display = "none";
-    }
-
-    container.appendChild(card);
-  });
-};
-
 const filterProducts = () => {
     const searchTerm = document.querySelector("#Search")?.value.toLowerCase() || "";
     let filtered = allProducts;
