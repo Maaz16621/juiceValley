@@ -40,10 +40,10 @@
 }
 
 /* Shimmer refinements for Menu Grid */
-.shimmer-product-card {
+.shimmer-product-card, .rendered-product-card {
     background: #fff;
     border-radius: 12px;
-    padding: 12px;
+    padding: 10px; /* Reduced padding */
     border: 1px solid #eee;
     display: flex;
     flex-direction: column;
@@ -52,6 +52,15 @@
     box-sizing: border-box;
 }
 
+.rendered-product-card .menu-list-image-wrap {
+    height: 170px !important;
+}
+
+.rendered-product-card .menu-list-image-wrap img {
+    height: 100% !important;
+    object-fit: cover;
+}
+
 .shimmer-product-card .js-shimmer {
-    margin-bottom: 12px;
+    margin-bottom: 8px; /* Reduced spacing */
 }

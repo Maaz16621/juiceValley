@@ -101,7 +101,7 @@ const renderProducts = (products) => {
 
   const testImgWrap = testShimmer.querySelector(".menu-list-image-wrap");
   if (testImgWrap) {
-      testImgWrap.innerHTML = '<div class="js-shimmer" style="width:100%; height:200px; border-radius:12px;"></div>';
+      testImgWrap.innerHTML = '<div class="js-shimmer" style="width:100%; height:170px; border-radius:12px;"></div>';
   }
 
   const testTitle = testShimmer.querySelector("#item-name");
