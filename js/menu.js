@@ -82,16 +82,43 @@ const renderProducts = (products) => {
 
   container.innerHTML = "";
   
+  // 1. ADD PERMANENT SHIMMER AT THE TOP FOR TESTING
+  const testShimmer = productTemplateCard.cloneNode(true);
+  showElement(testShimmer, "flex");
+  testShimmer.removeAttribute("id");
+  testShimmer.classList.add("shimmer-product-card");
+  testShimmer.style.pointerEvents = "none";
+  testShimmer.style.border = "2px solid red"; // Highlight testing card
+
+  const imgWrap = testShimmer.querySelector("#item-image");
+  if (imgWrap) {
+      imgWrap.innerHTML = '<div class="js-shimmer" style="width:100%; height:200px; border-radius:12px;"></div>';
+      imgWrap.style.background = "none";
+      imgWrap.style.height = "200px";
+  }
+
+  const title = testShimmer.querySelector("#item-name");
+  if (title) title.innerHTML = '<div class="js-shimmer" style="height: 24px; width: 70%;"></div>';
+
+  const energy = testShimmer.querySelector("#item-energy-value");
+  if (energy) energy.innerHTML = '<div class="js-shimmer" style="height: 14px; width: 40%;"></div>';
+
+  const desc = testShimmer.querySelector("#item-description");
+  if (desc) desc.innerHTML = '<div class="js-shimmer" style="height: 16px; width: 90%;"></div>';
+
+  container.appendChild(testShimmer);
+
+  // 2. RENDER ACTUAL PRODUCTS
   if (products.length === 0 && currentTab !== "test") {
-      container.innerHTML = `<div style="grid-column: 1 / -1; text-align: center; padding: 40px;">
-        <h3 style="color: #666;">No products found</h3>
-      </div>`;
-      // We still want to see the permanent shimmer if requested, but let's just show it always for now
+      const noFound = document.createElement("div");
+      noFound.style.cssText = "grid-column: 1 / -1; text-align: center; padding: 40px;";
+      noFound.innerHTML = '<h3 style="color: #666;">No products found</h3>';
+      container.appendChild(noFound);
   }
 
   products.forEach((product) => {
     const card = productTemplateCard.cloneNode(true);
-    showElement(card, "flex"); // Card is a link/block
+    showElement(card, "flex");
     card.removeAttribute("id");
     card.classList.add("rendered-product-card");
     card.href = `/product?id=${product.id}`;
@@ -120,31 +147,6 @@ const renderProducts = (products) => {
 
     container.appendChild(card);
   });
-
-  // PERMANENT SHIMMER FOR TESTING
-  const testShimmer = productTemplateCard.cloneNode(true);
-  showElement(testShimmer, "flex");
-  testShimmer.removeAttribute("id");
-  testShimmer.classList.add("shimmer-product-card");
-  testShimmer.style.pointerEvents = "none";
-
-  const imgWrap = testShimmer.querySelector("#item-image");
-  if (imgWrap) {
-      imgWrap.innerHTML = '<div class="js-shimmer" style="width:100%; height:200px; border-radius:12px;"></div>';
-      imgWrap.style.background = "none";
-      imgWrap.style.height = "200px";
-  }
-
-  const title = testShimmer.querySelector("#item-name");
-  if (title) title.innerHTML = '<div class="js-shimmer" style="height: 24px; width: 70%;"></div>';
-
-  const energy = testShimmer.querySelector("#item-energy-value");
-  if (energy) energy.innerHTML = '<div class="js-shimmer" style="height: 14px; width: 40%;"></div>';
-
-  const desc = testShimmer.querySelector("#item-description");
-  if (desc) desc.innerHTML = '<div class="js-shimmer" style="height: 16px; width: 90%;"></div>';
-
-  container.appendChild(testShimmer);
 };
 
 const filterProducts = () => {
