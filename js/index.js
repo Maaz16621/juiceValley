@@ -78,10 +78,8 @@ const renderProducts = (products) => {
 
     const image = card.querySelector("#item-image");
     if (image) {
+      image.crossOrigin = "anonymous";
       image.src = normalizeImageUrl(product.imageUrl || product.image);
-      image.style.opacity = "0";
-      image.onload = () => image.style.opacity = "1";
-      image.style.transition = "opacity 0.5s";
     }
 
     const title = card.querySelector("#item-tittle");
@@ -183,6 +181,7 @@ const renderDeals = (deals) => {
 
     const image = card.querySelector("#deal-image");
     if (image) {
+      image.crossOrigin = "anonymous";
       image.src = normalizeImageUrl(deal.imageUrl || deal.image);
     }
 
