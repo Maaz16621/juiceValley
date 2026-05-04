@@ -14,18 +14,24 @@ document.addEventListener("DOMContentLoaded", async () => {
     const productId = params.get("id");
     
     if (!productId) {
-        console.error("No product ID found in URL");
+        console.warn("No product ID found in URL, redirecting to home...");
+        window.location.href = "/";
         return;
     }
 
     try {
         const response = await fetch(`${PRODUCTS_API_URL}?id=${productId}`);
-        if (!response.ok) throw new Error("Product fetch failed");
+        if (!response.ok) {
+            console.error("Product fetch failed, redirecting to home...");
+            window.location.href = "/";
+            return;
+        }
         
         const product = await response.json();
         renderProductDetails(product);
     } catch (error) {
         console.error("Failed to load product details", error);
+        window.location.href = "/";
     }
 });
 

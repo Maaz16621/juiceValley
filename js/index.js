@@ -91,7 +91,7 @@ const renderProducts = (products) => {
     card.style.cursor = "pointer";
     
     card.onclick = () => {
-        window.location.href = `product.html?id=${product.id}`;
+        window.location.href = `/product?id=${product.id}`;
     };
 
     const image = card.querySelector("#item-image");
