@@ -21,11 +21,24 @@ const showElement = (element, display = "block") => {
 let productTemplateCard = null;
 let dealTemplateCard = null;
 
+const cleanTemplate = (template) => {
+    if (!template) return;
+    const imgs = template.querySelectorAll("img");
+    imgs.forEach(img => {
+        img.removeAttribute("srcset");
+        img.removeAttribute("sizes");
+        img.srcset = "";
+    });
+};
+
 const renderProductShimmers = (count = 4) => {
   const container = document.querySelector("#item-list");
   const templateCard = document.querySelector("#item-card");
   if (!container || !templateCard) return;
-  if (!productTemplateCard) productTemplateCard = templateCard.cloneNode(true);
+  if (!productTemplateCard) {
+      productTemplateCard = templateCard.cloneNode(true);
+      cleanTemplate(productTemplateCard);
+  }
 
   container.innerHTML = "";
   for (let i = 0; i < count; i++) {
@@ -79,6 +92,8 @@ const renderProducts = (products) => {
     const image = card.querySelector("#item-image");
     if (image) {
       image.removeAttribute("srcset");
+      image.removeAttribute("sizes");
+      image.srcset = "";
       image.crossOrigin = "anonymous";
       image.src = normalizeImageUrl(product.imageUrl || product.image);
     }
@@ -132,7 +147,10 @@ const renderDealShimmers = (count = 2) => {
   const container = document.querySelector(".featured-products-list");
   const templateCard = document.querySelector("#deal-card");
   if (!container || !templateCard) return;
-  if (!dealTemplateCard) dealTemplateCard = templateCard.cloneNode(true);
+  if (!dealTemplateCard) {
+      dealTemplateCard = templateCard.cloneNode(true);
+      cleanTemplate(dealTemplateCard);
+  }
 
   container.innerHTML = "";
   for (let i = 0; i < count; i++) {
@@ -183,6 +201,8 @@ const renderDeals = (deals) => {
     const image = card.querySelector("#deal-image");
     if (image) {
       image.removeAttribute("srcset");
+      image.removeAttribute("sizes");
+      image.srcset = "";
       image.crossOrigin = "anonymous";
       image.src = normalizeImageUrl(deal.imageUrl || deal.image);
     }
