@@ -184,9 +184,6 @@ const renderDeals = (deals) => {
     const image = card.querySelector("#deal-image");
     if (image) {
       image.src = normalizeImageUrl(deal.imageUrl || deal.image);
-      image.style.opacity = "0";
-      image.onload = () => image.style.opacity = "1";
-      image.style.transition = "opacity 0.5s";
     }
 
     const name = card.querySelector("#deal-name");
