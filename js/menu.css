@@ -7,20 +7,20 @@
   border-radius: 8px;
 }
 
-.menu-fillter:hover {
-  background: #f8f8f8;
-}
-
+.menu-fillter:hover,
 .menu-fillter.active {
   background: #3c9242;
   color: white !important;
 }
 
+.menu-fillter:hover .text-color-black,
+.menu-fillter:hover .text-size-medium,
 .menu-fillter.active .text-color-black,
 .menu-fillter.active .text-size-medium {
   color: white !important;
 }
 
+.menu-fillter:hover img,
 .menu-fillter.active img {
   filter: brightness(0) invert(1);
 }
