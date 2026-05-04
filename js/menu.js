@@ -50,26 +50,35 @@ const renderShimmers = (count = 8) => {
     card.classList.add("shimmer-product-card");
     card.style.pointerEvents = "none";
 
-    const imgWrap = card.querySelector("#item-image");
+    const imgWrap = card.querySelector(".menu-list-image-wrap");
     if (imgWrap) {
         imgWrap.innerHTML = '<div class="js-shimmer" style="width:100%; height:200px; border-radius:12px;"></div>';
-        imgWrap.style.background = "none";
-        imgWrap.style.height = "200px";
     }
 
     const title = card.querySelector("#item-name");
     if (title) {
-      title.innerHTML = '<div class="js-shimmer" style="height: 24px; width: 70%;"></div>';
+        title.textContent = "";
+        title.classList.add("js-shimmer");
+        title.style.height = "24px";
+        title.style.width = "70%";
     }
 
     const energy = card.querySelector("#item-energy-value");
     if (energy) {
-        energy.innerHTML = '<div class="js-shimmer" style="height: 14px; width: 40%;"></div>';
+        energy.textContent = "";
+        energy.classList.add("js-shimmer");
+        energy.style.height = "14px";
+        energy.style.width = "40%";
+        energy.style.marginTop = "10px";
     }
 
     const desc = card.querySelector("#item-description");
     if (desc) {
-      desc.innerHTML = '<div class="js-shimmer" style="height: 16px; width: 90%;"></div>';
+      desc.textContent = "";
+      desc.classList.add("js-shimmer");
+      desc.style.height = "16px";
+      desc.style.width = "90%";
+      desc.style.marginTop = "10px";
     }
 
     container.appendChild(card);
@@ -88,23 +97,38 @@ const renderProducts = (products) => {
   testShimmer.removeAttribute("id");
   testShimmer.classList.add("shimmer-product-card");
   testShimmer.style.pointerEvents = "none";
-  testShimmer.style.border = "2px solid red"; // Highlight testing card
+  testShimmer.style.border = "2px solid red"; 
 
-  const imgWrap = testShimmer.querySelector("#item-image");
-  if (imgWrap) {
-      imgWrap.innerHTML = '<div class="js-shimmer" style="width:100%; height:200px; border-radius:12px;"></div>';
-      imgWrap.style.background = "none";
-      imgWrap.style.height = "200px";
+  const testImgWrap = testShimmer.querySelector(".menu-list-image-wrap");
+  if (testImgWrap) {
+      testImgWrap.innerHTML = '<div class="js-shimmer" style="width:100%; height:200px; border-radius:12px;"></div>';
   }
 
-  const title = testShimmer.querySelector("#item-name");
-  if (title) title.innerHTML = '<div class="js-shimmer" style="height: 24px; width: 70%;"></div>';
+  const testTitle = testShimmer.querySelector("#item-name");
+  if (testTitle) {
+      testTitle.textContent = "";
+      testTitle.classList.add("js-shimmer");
+      testTitle.style.height = "24px";
+      testTitle.style.width = "70%";
+  }
 
-  const energy = testShimmer.querySelector("#item-energy-value");
-  if (energy) energy.innerHTML = '<div class="js-shimmer" style="height: 14px; width: 40%;"></div>';
+  const testEnergy = testShimmer.querySelector("#item-energy-value");
+  if (testEnergy) {
+      testEnergy.textContent = "";
+      testEnergy.classList.add("js-shimmer");
+      testEnergy.style.height = "14px";
+      testEnergy.style.width = "40%";
+      testEnergy.style.marginTop = "10px";
+  }
 
-  const desc = testShimmer.querySelector("#item-description");
-  if (desc) desc.innerHTML = '<div class="js-shimmer" style="height: 16px; width: 90%;"></div>';
+  const testDesc = testShimmer.querySelector("#item-description");
+  if (testDesc) {
+      testDesc.textContent = "";
+      testDesc.classList.add("js-shimmer");
+      testDesc.style.height = "16px";
+      testDesc.style.width = "90%";
+      testDesc.style.marginTop = "10px";
+  }
 
   container.appendChild(testShimmer);
 

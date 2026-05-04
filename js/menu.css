@@ -5,12 +5,11 @@
 }
 
 .js-shimmer {
-  background: linear-gradient(90deg, #cccccc 25%, #333333 50%, #cccccc 75%) !important;
+  background: linear-gradient(90deg, #eeeeee 25%, #dddddd 50%, #eeeeee 75%) !important;
   background-size: 200% 100% !important;
-  animation: js-shimmer-menu 1s infinite linear !important;
+  animation: js-shimmer-menu 1.5s infinite linear !important;
   display: block !important;
   border-radius: 8px;
-  min-height: 20px;
 }
 
 /* Menu Specific Styles */
