@@ -195,3 +195,4 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (container) container.innerHTML = "Error loading products.";
   }
 });
+ 
