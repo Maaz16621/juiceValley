@@ -1,15 +1,16 @@
-/* Shimmer Animation */
+/* Shimmer Animation (Global) */
 @keyframes js-shimmer {
   0% { background-position: -200% 0; }
   100% { background-position: 200% 0; }
 }
 
 .js-shimmer {
-  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%) !important;
+  background: linear-gradient(90deg, #eeeeee 25%, #dddddd 50%, #eeeeee 75%) !important;
   background-size: 200% 100% !important;
-  animation: js-shimmer 1.5s linear infinite !important;
+  animation: js-shimmer 1.5s infinite linear !important;
   display: block !important;
   border-radius: 8px;
+  min-height: 10px;
 }
 
 /* Base horizontal layout for shimmers (Pre-Owl) */
@@ -78,12 +79,11 @@
 }
 
 /* Sizing for cards */
-.rendered-product-card, .shimmer-product-card {
+.rendered-product-card {
   flex: 0 0 280px !important;
   width: 280px !important;
   min-width: 280px !important;
 }
-
 
 .shimmer-deal-card, .rendered-deal-card {
   width: 100% !important;
@@ -99,7 +99,6 @@
   aspect-ratio: 16 / 9;
   object-fit: cover;
   border-radius: 8px;
-  /* Add a dark overlay to make text more readable */
   background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3));
   background-blend-mode: overlay;
   filter: brightness(0.85);
@@ -113,7 +112,6 @@
   aspect-ratio: 16 / 9;
   object-fit: cover;
   border-radius: 8px;
-  /* Add a dark overlay to make text more readable */
   background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3));
   background-blend-mode: overlay;
   filter: brightness(0.85);
@@ -126,48 +124,6 @@
 
 .img-loaded {
   opacity: 1 !important;
-}
-
-/* Menu Selectors */
-.menu-fillter {
-  cursor: pointer;
-  transition: all 0.3s ease;
-  border: 1px solid transparent;
-  padding: 10px;
-  border-radius: 8px;
-}
-
-.menu-fillter:hover {
-  background: #f8f8f8;
-}
-
-.menu-fillter.active {
-  background: #3c9242;
-  color: white !important;
-}
-
-.menu-fillter.active .text-color-black,
-.menu-fillter.active .text-size-medium {
-  color: white !important;
-}
-
-.menu-fillter.active img {
-  filter: brightness(0) invert(1);
-}
-
-/* Shimmer refinements for Menu Grid */
-.shimmer-product-card {
-    background: #fff;
-    border-radius: 12px;
-    padding: 12px;
-    border: 1px solid #eee;
-    display: flex;
-    flex-direction: column;
-}
-
-.shimmer-product-card .js-shimmer {
-    background: linear-gradient(90deg, #f0f0f0 25%, #e8e8e8 50%, #f0f0f0 75%) !important;
-    background-size: 200% 100% !important;
 }
 
 /* Hide Templates */

@@ -45,41 +45,31 @@ const renderShimmers = (count = 8) => {
   container.innerHTML = "";
   for (let i = 0; i < count; i++) {
     const card = productTemplateCard.cloneNode(true);
-    showElement(card, "block");
+    showElement(card, "flex");
     card.removeAttribute("id");
     card.classList.add("shimmer-product-card");
     card.style.pointerEvents = "none";
 
     const imgWrap = card.querySelector("#item-image");
     if (imgWrap) {
-        imgWrap.innerHTML = '<div class="js-shimmer" style="width:100%;height:100%;min-height:200px;border-radius:12px;"></div>';
+        imgWrap.innerHTML = '<div class="js-shimmer" style="width:100%; height:200px; border-radius:12px;"></div>';
         imgWrap.style.background = "none";
+        imgWrap.style.height = "200px";
     }
 
     const title = card.querySelector("#item-name");
     if (title) {
-      title.textContent = "";
-      title.classList.add("js-shimmer");
-      title.style.height = "24px";
-      title.style.width = "70%";
-      title.style.marginBottom = "8px";
+      title.innerHTML = '<div class="js-shimmer" style="height: 24px; width: 70%;"></div>';
     }
 
     const energy = card.querySelector("#item-energy-value");
     if (energy) {
-        energy.textContent = "";
-        energy.classList.add("js-shimmer");
-        energy.style.height = "14px";
-        energy.style.width = "40%";
-        energy.style.marginBottom = "8px";
+        energy.innerHTML = '<div class="js-shimmer" style="height: 14px; width: 40%;"></div>';
     }
 
     const desc = card.querySelector("#item-description");
     if (desc) {
-      desc.textContent = "";
-      desc.classList.add("js-shimmer");
-      desc.style.height = "16px";
-      desc.style.width = "90%";
+      desc.innerHTML = '<div class="js-shimmer" style="height: 16px; width: 90%;"></div>';
     }
 
     container.appendChild(card);

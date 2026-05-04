@@ -1,0 +1,43 @@
+/* Menu Specific Styles */
+.menu-fillter {
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 1px solid transparent;
+  padding: 10px;
+  border-radius: 8px;
+}
+
+.menu-fillter:hover {
+  background: #f8f8f8;
+}
+
+.menu-fillter.active {
+  background: #3c9242;
+  color: white !important;
+}
+
+.menu-fillter.active .text-color-black,
+.menu-fillter.active .text-size-medium {
+  color: white !important;
+}
+
+.menu-fillter.active img {
+  filter: brightness(0) invert(1);
+}
+
+/* Shimmer refinements for Menu Grid */
+.shimmer-product-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 12px;
+    border: 1px solid #eee;
+    display: flex;
+    flex-direction: column;
+    width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box;
+}
+
+.shimmer-product-card .js-shimmer {
+    margin-bottom: 12px;
+}
