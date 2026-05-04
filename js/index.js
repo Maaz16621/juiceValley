@@ -94,6 +94,8 @@ const renderProducts = (products) => {
       image.removeAttribute("srcset");
       image.removeAttribute("sizes");
       image.srcset = "";
+      image.classList.add("img-loading");
+      image.onload = () => image.classList.replace("img-loading", "img-loaded");
       image.src = normalizeImageUrl(product.imageUrl || product.image);
     }
 
@@ -202,6 +204,8 @@ const renderDeals = (deals) => {
       image.removeAttribute("srcset");
       image.removeAttribute("sizes");
       image.srcset = "";
+      image.classList.add("img-loading");
+      image.onload = () => image.classList.replace("img-loading", "img-loaded");
       image.src = normalizeImageUrl(deal.imageUrl || deal.image);
     }
 
