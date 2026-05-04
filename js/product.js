@@ -54,10 +54,17 @@ function renderShimmers() {
         description.style.width = "100%";
     }
 
+    // Improved Image Shimmer: Create a placeholder div
     const image = document.querySelector("#item-image");
-    if (image) {
-        image.classList.add("js-shimmer");
-        image.src = "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"; // Transparent pixel
+    if (image && !document.querySelector("#image-skeleton")) {
+        const skeleton = document.createElement("div");
+        skeleton.id = "image-skeleton";
+        skeleton.className = "js-shimmer";
+        skeleton.style.width = "100%";
+        skeleton.style.height = "400px"; // Match your hero image height
+        skeleton.style.borderRadius = "8px";
+        image.style.display = "none";
+        image.parentNode.insertBefore(skeleton, image);
     }
 
     const sizePicker = document.querySelector("#size-picker");
@@ -65,16 +72,22 @@ function renderShimmers() {
 }
 
 function renderProductDetails(product) {
-    // Populate Image
     const image = document.querySelector("#item-image");
+    const skeleton = document.querySelector("#image-skeleton");
+
     if (image) {
-        image.classList.remove("js-shimmer");
         image.removeAttribute("srcset");
         image.removeAttribute("sizes");
         image.srcset = "";
-        image.classList.add("img-loading");
-        image.onload = () => image.classList.replace("img-loading", "img-loaded");
-        image.src = normalizeImageUrl(product.imageUrl || product.image);
+        
+        // Load the image in the background
+        const tempImg = new Image();
+        tempImg.onload = () => {
+            image.src = tempImg.src;
+            image.style.display = "block";
+            if (skeleton) skeleton.remove();
+        };
+        tempImg.src = normalizeImageUrl(product.imageUrl || product.image);
     }
 
     // Populate Name

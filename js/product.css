@@ -17,20 +17,18 @@
 /* Hero Image Styles */
 #item-image {
   width: 100%;
-  min-height: 300px; /* Ensure height during load */
+  min-height: 400px; /* Match the skeleton height */
   object-fit: cover;
   border-radius: 8px;
-  /* Dark overlay for readability - will be active once loaded */
+  /* Dark overlay for readability */
   background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3));
   background-blend-mode: overlay;
   filter: brightness(0.85);
-  transition: opacity 0.3s ease;
+  display: none; /* Hidden by default until JS shows it */
 }
 
-#item-image.js-shimmer {
-    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%) !important;
-    background-size: 200% 100% !important;
-    filter: none; /* No dimming during shimmer */
+#image-skeleton {
+    margin-bottom: 20px;
 }
 
 .img-loading {
