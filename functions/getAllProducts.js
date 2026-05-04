@@ -17,8 +17,29 @@ const getAllProducts = functions.https.onRequest(async (req, res) => {
     return res.status(204).send("");
   }
 
+  const { id } = req.query;
+
   try {
-    const productsCollection = admin.firestore().collection("products");
+    const db = admin.firestore();
+    
+    if (id) {
+        const productDoc = await db.collection("products").doc(id).get();
+        if (!productDoc.exists) {
+            return res.status(404).json({ message: "Product not found" });
+        }
+        
+        const product = { id: productDoc.id, ...productDoc.data() };
+        let categoryName = "N/A";
+        if (product.categoryId) {
+            const categoryDoc = await db.collection("categories").doc(product.categoryId).get();
+            if (categoryDoc.exists) {
+                categoryName = categoryDoc.data().name;
+            }
+        }
+        return res.status(200).json({ ...product, categoryName });
+    }
+
+    const productsCollection = db.collection("products");
     const snapshot = await productsCollection.get();
 
     const productsData = await Promise.all(

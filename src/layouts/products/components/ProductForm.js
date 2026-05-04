@@ -53,6 +53,11 @@ function ProductForm({ open, onClose, onSave, product }) {
       setName(product.name || "");
       setDescription(product.description || "");
       setPrice(product.price || "");
+      setSizePrices(product.sizePrices || {
+        S: { enabled: false, price: "" },
+        M: { enabled: true, price: "" },
+        L: { enabled: false, price: "" }
+      });
       setImageUrl(product.imageUrl || "");
       setIsDiscontinued(product.isDiscontinued || false);
       setEnergyValue(product.energyValue || "");
@@ -223,6 +228,70 @@ function ProductForm({ open, onClose, onSave, product }) {
                         <IconButton edge="end" onClick={() => removeIngredient(index)} size="small">
                           <Icon color="error">delete</Icon>
                         </IconButton>
+                      </ListItemSecondaryAction>
+                    </ListItem>
+                  ))}
+                  {ingredients.length === 0 && (
+                    <ListItem>
+                      <ListItemText 
+                        primary={<ArgonTypography variant="caption" color="text">No ingredients added yet.</ArgonTypography>} 
+                      />
+                    </ListItem>
+                  )}
+                </List>
+              </ArgonBox>
+            </Grid>
+
+            <Grid item xs={12}>
+              <FormControlLabel
+                control={
+                  <Switch
+                    checked={isDiscontinued}
+                    onChange={(e) => setIsDiscontinued(e.target.checked)}
+                  />
+                }
+                label="Discontinued"
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <ArgonBox display="flex" alignItems="center" gap={2} mt={1}>
+                <ArgonButton component="label" variant="outlined" color="info" size="small">
+                  <Icon>upload</Icon>&nbsp; Upload Image
+                  <input type="file" hidden onChange={handleImageChange} />
+                </ArgonButton>
+                <ArgonBox
+                  component="img"
+                  src={imageUrl || "https://via.placeholder.com/100x100?text=No+Image"}
+                  alt="Preview"
+                  width="60px"
+                  height="60px"
+                  sx={{ objectFit: "cover", borderRadius: "8px", border: "1px solid #ddd" }}
+                />
+              </ArgonBox>
+            </Grid>
+          </Grid>
+        </ArgonBox>
+      </DialogContent>
+      <DialogActions>
+        <ArgonButton onClick={onClose} color="secondary">
+          Cancel
+        </ArgonButton>
+        <ArgonButton onClick={handleSave} color="info" variant="gradient">
+          Save
+        </ArgonButton>
+      </DialogActions>
+    </Dialog>
+  );
+}
+
+ProductForm.propTypes = {
+  open: PropTypes.bool.isRequired,
+  onClose: PropTypes.func.isRequired,
+  onSave: PropTypes.func.isRequired,
+  product: PropTypes.object,
+};
+
+export default ProductForm;/IconButton>
                       </ListItemSecondaryAction>
                     </ListItem>
                   ))}

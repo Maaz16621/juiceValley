@@ -88,6 +88,11 @@ const renderProducts = (products) => {
     showElement(card, "block");
     card.removeAttribute("id");
     card.classList.add("rendered-product-card");
+    card.style.cursor = "pointer";
+    
+    card.onclick = () => {
+        window.location.href = `product.html?id=${product.id}`;
+    };
 
     const image = card.querySelector("#item-image");
     if (image) {

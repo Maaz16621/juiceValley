@@ -114,6 +114,7 @@ function Products() {
       name: productData.name,
       description: productData.description,
       price: Number(productData.price),
+      sizePrices: productData.sizePrices,
       categoryId: productData.categoryId,
       isDiscontinued: productData.isDiscontinued,
       energyValue: productData.energyValue,
