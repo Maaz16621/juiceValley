@@ -52,7 +52,7 @@ const renderShimmers = (count = 8) => {
 
     const imgWrap = card.querySelector(".menu-list-image-wrap");
     if (imgWrap) {
-        imgWrap.innerHTML = '<div class="js-shimmer" style="width:100%; height:200px; border-radius:12px;"></div>';
+        imgWrap.innerHTML = '<div class="js-shimmer" style="width:100%; height:100%; border-radius:12px;"></div>';
     }
 
     const title = card.querySelector("#item-name");
@@ -91,54 +91,45 @@ const renderProducts = (products) => {
 
   container.innerHTML = "";
   
-  // 1. ADD PERMANENT SHIMMER AT THE TOP FOR TESTING
-  const testShimmer = productTemplateCard.cloneNode(true);
-  showElement(testShimmer, "flex");
-  testShimmer.removeAttribute("id");
-  testShimmer.classList.add("shimmer-product-card");
-  testShimmer.style.pointerEvents = "none";
-  testShimmer.style.border = "2px solid red"; 
-
-  const testImgWrap = testShimmer.querySelector(".menu-list-image-wrap");
-  if (testImgWrap) {
-      testImgWrap.innerHTML = '<div class="js-shimmer" style="width:100%; height:170px; border-radius:12px;"></div>';
-  }
-
-  const testTitle = testShimmer.querySelector("#item-name");
-  if (testTitle) {
-      testTitle.textContent = "";
-      testTitle.classList.add("js-shimmer");
-      testTitle.style.height = "24px";
-      testTitle.style.width = "70%";
-  }
-
-  const testEnergy = testShimmer.querySelector("#item-energy-value");
-  if (testEnergy) {
-      testEnergy.textContent = "";
-      testEnergy.classList.add("js-shimmer");
-      testEnergy.style.height = "14px";
-      testEnergy.style.width = "40%";
-      testEnergy.style.marginTop = "10px";
-  }
-
-  const testDesc = testShimmer.querySelector("#item-description");
-  if (testDesc) {
-      testDesc.textContent = "";
-      testDesc.classList.add("js-shimmer");
-      testDesc.style.height = "16px";
-      testDesc.style.width = "90%";
-      testDesc.style.marginTop = "10px";
-  }
-
-  container.appendChild(testShimmer);
-
-  // 2. RENDER ACTUAL PRODUCTS
-  if (products.length === 0 && currentTab !== "test") {
+  if (products.length === 0) {
       const noFound = document.createElement("div");
       noFound.style.cssText = "grid-column: 1 / -1; text-align: center; padding: 40px;";
       noFound.innerHTML = '<h3 style="color: #666;">No products found</h3>';
       container.appendChild(noFound);
   }
+
+  products.forEach((product) => {
+    const card = productTemplateCard.cloneNode(true);
+    showElement(card, "flex");
+    card.removeAttribute("id");
+    card.classList.add("rendered-product-card");
+    card.href = `/product?id=${product.id}`;
+
+    const image = card.querySelector("#item-image img");
+    if (image) {
+      image.classList.add("img-loading");
+      image.onload = () => image.classList.replace("img-loading", "img-loaded");
+      image.src = normalizeImageUrl(product.imageUrl || product.image);
+    }
+
+    const title = card.querySelector("#item-name");
+    if (title) title.textContent = product.name || "Untitled";
+
+    const energy = card.querySelector("#item-energy-value");
+    if (energy) {
+      energy.textContent = product.energyValue ? `${product.energyValue} kcal` : "";
+      if (!energy.textContent) energy.style.display = "none";
+    }
+
+    const description = card.querySelector("#item-description");
+    if (description) {
+      description.textContent = product.description || "";
+      if (!description.textContent) description.style.display = "none";
+    }
+
+    container.appendChild(card);
+  });
+};
 
   products.forEach((product) => {
     const card = productTemplateCard.cloneNode(true);
