@@ -93,9 +93,23 @@
   border: 1px solid #eee;
 }
 
-#item-image, #deal-image {
+#deal-image {
   width: 100%;
   height: 150px !important; /* Fixed height for uniformity */
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  border-radius: 8px;
+  /* Add a dark overlay to make text more readable */
+  background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3));
+  background-blend-mode: overlay;
+  filter: brightness(0.85);
+  transition: opacity 0.3s ease;
+}
+
+
+#item-image {
+  width: 100%;
+  height: 200px !important; /* Fixed height for uniformity */
   aspect-ratio: 16 / 9;
   object-fit: cover;
   border-radius: 8px;
