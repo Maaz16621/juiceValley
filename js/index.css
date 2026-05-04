@@ -104,6 +104,10 @@
   width: 100%;
   object-fit: cover;
   border-radius: 8px;
+  /* Add a dark overlay to make text more readable */
+  background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3));
+  background-blend-mode: overlay;
+  filter: brightness(0.85);
 }
 
 /* Hide Templates */
