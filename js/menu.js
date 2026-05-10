@@ -24,7 +24,23 @@ let currentCategory = "All";
 let productTemplateCard = null;
 
 const renderCategories = (products) => {
-    const categoryContainer = document.querySelector(".menu-categories-wrap");
+    let categoryContainer = document.querySelector(".menu-categories-wrap");
+    
+    // Webflow compatibility: if the specific wrap is missing, look for the filter-list-wrapper
+    if (!categoryContainer) {
+        const filterWrapper = document.querySelector(".filter-list-wrapper");
+        if (filterWrapper) {
+            // Create a container for categories if it doesn't exist
+            categoryContainer = document.createElement("div");
+            categoryContainer.className = "menu-categories-wrap";
+            categoryContainer.style.display = "none"; // Hide by default, toggled by #is-filter
+            categoryContainer.style.flexWrap = "wrap";
+            categoryContainer.style.gap = "10px";
+            categoryContainer.style.marginTop = "10px";
+            filterWrapper.appendChild(categoryContainer);
+        }
+    }
+
     if (!categoryContainer) return;
 
     // Extract unique categories from products, excluding "N/A" and falsy values
@@ -184,10 +200,24 @@ document.addEventListener("DOMContentLoaded", async () => {
   const menuSelector = document.querySelector("#menu-selector");
   const favSelector = document.querySelector("#fav-selector");
   const searchInput = document.querySelector("#Search");
+  const filterToggle = document.querySelector("#is-filter");
 
   // Initial State
   if (menuSelector) menuSelector.classList.add("active");
   renderShimmers(8);
+
+  // Filter Toggle (#is-filter)
+  if (filterToggle) {
+    filterToggle.addEventListener("click", (e) => {
+        e.preventDefault();
+        const categoryWrap = document.querySelector(".menu-categories-wrap");
+        if (categoryWrap) {
+            const isHidden = categoryWrap.style.display === "none";
+            categoryWrap.style.display = isHidden ? "flex" : "none";
+            filterToggle.classList.toggle("active", isHidden);
+        }
+    });
+  }
 
   // Tab switching
   if (menuSelector) {
