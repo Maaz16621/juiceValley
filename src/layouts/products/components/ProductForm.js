@@ -35,14 +35,23 @@ function ProductForm({ open, onClose, onSave, product }) {
   const [ingredients, setIngredients] = useState([]);
   const [newIngredient, setNewIngredient] = useState("");
   const [categories, setCategories] = useState([]);
+  const [sizePrices, setSizePrices] = useState({
+    S: { enabled: false, price: "" },
+    M: { enabled: true, price: "" },
+    L: { enabled: false, price: "" }
+  });
 
   useEffect(() => {
     const fetchCategories = async () => {
       const querySnapshot = await getDocs(collection(firestore, "categories"));
       const categoriesData = querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
       setCategories(categoriesData);
+      
       if (product && product.categoryId) {
-        setCategory(categoriesData.find((c) => c.id === product.categoryId));
+        const foundCategory = categoriesData.find((c) => c.id === product.categoryId);
+        if (foundCategory) {
+          setCategory(foundCategory);
+        }
       }
     };
     fetchCategories();
@@ -62,7 +71,6 @@ function ProductForm({ open, onClose, onSave, product }) {
       setIsDiscontinued(product.isDiscontinued || false);
       setEnergyValue(product.energyValue || "");
       
-      // Handle conversion from string if necessary
       if (Array.isArray(product.ingredients)) {
         setIngredients(product.ingredients);
       } else if (typeof product.ingredients === "string" && product.ingredients.length > 0) {
@@ -74,6 +82,11 @@ function ProductForm({ open, onClose, onSave, product }) {
       setName("");
       setDescription("");
       setPrice("");
+      setSizePrices({
+        S: { enabled: false, price: "" },
+        M: { enabled: true, price: "" },
+        L: { enabled: false, price: "" }
+      });
       setImageUrl("");
       setCategory(null);
       setIsDiscontinued(false);
@@ -87,6 +100,7 @@ function ProductForm({ open, onClose, onSave, product }) {
       name,
       description,
       price,
+      sizePrices,
       image,
       categoryId: category ? category.id : null,
       isDiscontinued,
@@ -170,6 +184,7 @@ function ProductForm({ open, onClose, onSave, product }) {
                   options={categories}
                   getOptionLabel={(option) => option.name}
                   value={category}
+                  isOptionEqualToValue={(option, value) => option.id === value.id}
                   onChange={(event, newValue) => {
                     setCategory(newValue);
                   }}
@@ -185,8 +200,9 @@ function ProductForm({ open, onClose, onSave, product }) {
             </Grid>
             <Grid item xs={12}>
               <ArgonBox mb={1}>
-                <ArgonTypography variant="caption" fontWeight="bold">Energy Value (e.g., 250 kcal)</ArgonTypography>
+                <ArgonTypography variant="caption" fontWeight="bold">Energy Value (kcal)</ArgonTypography>
                 <ArgonInput
+                  type="number"
                   placeholder="Energy Value"
                   value={energyValue}
                   onChange={(e) => setEnergyValue(e.target.value)}
@@ -228,70 +244,6 @@ function ProductForm({ open, onClose, onSave, product }) {
                         <IconButton edge="end" onClick={() => removeIngredient(index)} size="small">
                           <Icon color="error">delete</Icon>
                         </IconButton>
-                      </ListItemSecondaryAction>
-                    </ListItem>
-                  ))}
-                  {ingredients.length === 0 && (
-                    <ListItem>
-                      <ListItemText 
-                        primary={<ArgonTypography variant="caption" color="text">No ingredients added yet.</ArgonTypography>} 
-                      />
-                    </ListItem>
-                  )}
-                </List>
-              </ArgonBox>
-            </Grid>
-
-            <Grid item xs={12}>
-              <FormControlLabel
-                control={
-                  <Switch
-                    checked={isDiscontinued}
-                    onChange={(e) => setIsDiscontinued(e.target.checked)}
-                  />
-                }
-                label="Discontinued"
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <ArgonBox display="flex" alignItems="center" gap={2} mt={1}>
-                <ArgonButton component="label" variant="outlined" color="info" size="small">
-                  <Icon>upload</Icon>&nbsp; Upload Image
-                  <input type="file" hidden onChange={handleImageChange} />
-                </ArgonButton>
-                <ArgonBox
-                  component="img"
-                  src={imageUrl || "https://via.placeholder.com/100x100?text=No+Image"}
-                  alt="Preview"
-                  width="60px"
-                  height="60px"
-                  sx={{ objectFit: "cover", borderRadius: "8px", border: "1px solid #ddd" }}
-                />
-              </ArgonBox>
-            </Grid>
-          </Grid>
-        </ArgonBox>
-      </DialogContent>
-      <DialogActions>
-        <ArgonButton onClick={onClose} color="secondary">
-          Cancel
-        </ArgonButton>
-        <ArgonButton onClick={handleSave} color="info" variant="gradient">
-          Save
-        </ArgonButton>
-      </DialogActions>
-    </Dialog>
-  );
-}
-
-ProductForm.propTypes = {
-  open: PropTypes.bool.isRequired,
-  onClose: PropTypes.func.isRequired,
-  onSave: PropTypes.func.isRequired,
-  product: PropTypes.object,
-};
-
-export default ProductForm;/IconButton>
                       </ListItemSecondaryAction>
                     </ListItem>
                   ))}

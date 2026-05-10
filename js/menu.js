@@ -20,7 +20,33 @@ const showElement = (element, display = "block") => {
 let allProducts = [];
 let favoriteIds = JSON.parse(localStorage.getItem("favorites") || "[]");
 let currentTab = "menu"; // "menu" or "fav"
+let currentCategory = "All";
 let productTemplateCard = null;
+
+const renderCategories = (products) => {
+    const categoryContainer = document.querySelector(".menu-categories-wrap");
+    if (!categoryContainer) return;
+
+    // Extract unique categories from products, excluding "N/A" and falsy values
+    const uniqueCategories = [...new Set(products.map(p => p.categoryName).filter(cat => cat && cat !== "N/A"))];
+    const categories = ["All", ...uniqueCategories.sort()];
+    
+    categoryContainer.innerHTML = "";
+    categories.forEach(cat => {
+        const btn = document.createElement("a");
+        btn.href = "#";
+        btn.className = `menu-fillter w-inline-block ${cat === currentCategory ? "active" : ""}`;
+        btn.innerHTML = `<div class="menu-category-text">${cat}</div>`;
+        btn.onclick = (e) => {
+            e.preventDefault();
+            currentCategory = cat;
+            document.querySelectorAll(".menu-fillter").forEach(b => b.classList.remove("active"));
+            btn.classList.add("active");
+            filterProducts();
+        };
+        categoryContainer.appendChild(btn);
+    });
+};
 
 const cleanTemplate = (template) => {
   if (!template) return;
@@ -132,18 +158,22 @@ const renderProducts = (products) => {
 };
 
 const filterProducts = () => {
-    const searchTerm = document.querySelector("#Search")?.value.toLowerCase() || "";
+    const searchTerm = document.querySelector("#Search")?.value.toLowerCase().trim() || "";
     let filtered = allProducts;
 
     if (currentTab === "fav") {
         filtered = filtered.filter(p => favoriteIds.includes(p.id));
     }
 
+    if (currentCategory !== "All") {
+        filtered = filtered.filter(p => p.categoryName && p.categoryName.trim() === currentCategory.trim());
+    }
+
     if (searchTerm) {
         filtered = filtered.filter(p => 
-            p.name?.toLowerCase().includes(searchTerm) || 
-            p.description?.toLowerCase().includes(searchTerm) ||
-            p.categoryName?.toLowerCase().includes(searchTerm)
+            (p.name && p.name.toLowerCase().includes(searchTerm)) || 
+            (p.description && p.description.toLowerCase().includes(searchTerm)) ||
+            (p.categoryName && p.categoryName.toLowerCase().includes(searchTerm))
         );
     }
 
@@ -188,6 +218,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   try {
     const res = await fetch(PRODUCTS_API_URL);
     allProducts = await res.json();
+    renderCategories(allProducts);
     filterProducts();
   } catch (e) {
     console.error("Failed to load products", e);
@@ -195,4 +226,3 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (container) container.innerHTML = "Error loading products.";
   }
 });
- 

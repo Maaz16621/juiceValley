@@ -73,9 +73,9 @@ function Configurator() {
         px={3}
       >
         <ArgonBox>
-          <ArgonTypography variant="h5">Argon Configurator</ArgonTypography>
+          <ArgonTypography variant="h5">Juice Valley Configurator</ArgonTypography>
           <ArgonTypography variant="body2" color="text">
-            See our dashboard options.
+            See our panel options.
           </ArgonTypography>
         </ArgonBox>
 

@@ -31,10 +31,13 @@ import ArgonBox from "components/ArgonBox";
 import ArgonTypography from "components/ArgonTypography";
 import ArgonButton from "components/ArgonButton";
 import ArgonAvatar from "components/ArgonAvatar";
+import ArgonInput from "components/ArgonInput";
 import ProductForm from "./components/ProductForm";
 
 function Products() {
   const [products, setProducts] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [filterCategory, setFilterCategory] = useState({ id: "All", name: "All Categories" });
   const [loading, setLoading] = useState(true);
   const [formOpen, setFormOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
@@ -43,7 +46,14 @@ function Products() {
 
   useEffect(() => {
     fetchProducts();
+    fetchCategories();
   }, []);
+
+  const fetchCategories = async () => {
+    const querySnapshot = await getDocs(collection(firestore, "categories"));
+    const categoriesData = querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+    setCategories([{ id: "All", name: "All Categories" }, ...categoriesData]);
+  };
 
   const fetchProducts = async () => {
     setLoading(true);
@@ -162,6 +172,11 @@ function Products() {
       type: "number",
     },
     {
+      field: "energyValue",
+      headerName: "Energy (kcal)",
+      width: 120,
+    },
+    {
       field: "isDiscontinued",
       headerName: "Status",
       renderCell: (params) => (
@@ -198,6 +213,10 @@ function Products() {
     },
   ];
 
+  const filteredProducts = filterCategory.id === "All" 
+    ? products 
+    : products.filter(p => p.categoryId === filterCategory.id);
+
   return (
     <DashboardLayout>
       <DashboardNavbar />
@@ -205,19 +224,31 @@ function Products() {
         <ArgonBox mb={3}>
           <Card>
             <ArgonBox
-              display="flex"
-              justifyContent="space-between"
-              alignItems="center"
               p={3}
             >
-              <ArgonTypography variant="h6">Products</ArgonTypography>
-              <ArgonButton
-                variant="gradient"
-                color="info"
-                onClick={handleAdd}
-              >
-                <Icon>add</Icon>&nbsp; Add Product
-              </ArgonButton>
+              <ArgonBox display="flex" justifyContent="space-between" alignItems="center" mb={3}>
+                <ArgonTypography variant="h6">Products</ArgonTypography>
+                <ArgonButton
+                  variant="gradient"
+                  color="info"
+                  onClick={handleAdd}
+                >
+                  <Icon>add</Icon>&nbsp; Add Product
+                </ArgonButton>
+              </ArgonBox>
+
+              <ArgonBox display="flex" gap={1} flexWrap="wrap">
+                {categories.map((cat) => (
+                  <Chip
+                    key={cat.id}
+                    label={cat.name}
+                    color={filterCategory.id === cat.id ? "info" : "default"}
+                    onClick={() => setFilterCategory(cat)}
+                    variant={filterCategory.id === cat.id ? "filled" : "outlined"}
+                    sx={{ cursor: "pointer" }}
+                  />
+                ))}
+              </ArgonBox>
             </ArgonBox>
             <ArgonBox sx={{ height: 600, width: "100%", p: 2 }}>
               {loading ? (
@@ -231,7 +262,7 @@ function Products() {
                 </ArgonBox>
               ) : (
                 <DataGrid
-                  rows={products}
+                  rows={filteredProducts}
                   columns={columns}
                   pageSize={10}
                   rowsPerPageOptions={[10]}

@@ -1,6 +1,5 @@
 const functions = require("firebase-functions");
 const admin = require("firebase-admin");
-const { getDoc } = require("firebase-admin/firestore");
 
 const setCorsHeaders = (res) => {
   res.set("Access-Control-Allow-Origin", "*");
@@ -52,14 +51,12 @@ const getAllProducts = functions.https.onRequest(async (req, res) => {
         let categoryName = "N/A";
         if (product.categoryId) {
           try {
-            const categoryDocRef = admin.firestore().doc(`categories/${product.categoryId}`);
-            const categoryDoc = await getDoc(categoryDocRef);
-            if (categoryDoc.exists()) {
+            const categoryDoc = await admin.firestore().collection("categories").doc(product.categoryId).get();
+            if (categoryDoc.exists) {
               categoryName = categoryDoc.data().name;
             }
           } catch (error) {
             console.error(`Error fetching category for product ${product.id}:`, error);
-            // Keep categoryName as 'N/A' or handle as appropriate
           }
         }
 

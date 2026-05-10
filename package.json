@@ -1,9 +1,9 @@
 {
-  "name": "argon-dashboard-mui",
+  "name": "juice-valley-panel",
   "version": "3.0.1",
   "author": "Creative Tim",
   "license": "SEE LICENSE IN <https://www.creative-tim.com/license>",
-  "description": "React version of Argon Dashboard 2 by Creative Tim",
+  "description": "Juice Valley Management Panel",
   "bugs": {
     "url": "https://github.com/creativetimofficial/argon-dashboard-material-ui/issues"
   },
