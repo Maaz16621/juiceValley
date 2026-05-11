@@ -75,4 +75,7 @@
     justify-content: flex-start !important;
     width: 100% !important;
     flex-wrap: wrap !important;
+    flex-direction: column;
+    align-content: flex-start;
+    align-items: flex-start;
 }
