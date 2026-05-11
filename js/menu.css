@@ -60,3 +60,19 @@
 .shimmer-product-card .js-shimmer {
     margin-bottom: 8px;
 }
+
+/* Filter Alignment Fix */
+.filter-list-wrapper {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    text-align: left !important;
+    width: 100%;
+}
+
+.menu-categories-wrap {
+    display: flex !important;
+    justify-content: flex-start !important;
+    width: 100% !important;
+    flex-wrap: wrap !important;
+}

@@ -33,10 +33,11 @@ const renderCategories = (products) => {
             // Create a container for categories if it doesn't exist
             categoryContainer = document.createElement("div");
             categoryContainer.className = "menu-categories-wrap";
-            categoryContainer.style.display = "none"; // Hide by default, toggled by #is-filter
+            categoryContainer.style.display = "flex"; // Show by default
             categoryContainer.style.flexWrap = "wrap";
             categoryContainer.style.gap = "10px";
             categoryContainer.style.marginTop = "10px";
+            categoryContainer.style.justifyContent = "flex-start"; // Align to left
             filterWrapper.appendChild(categoryContainer);
         }
     }
