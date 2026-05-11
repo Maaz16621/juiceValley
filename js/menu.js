@@ -33,16 +33,20 @@ const renderCategories = (products) => {
             // Create a container for categories if it doesn't exist
             categoryContainer = document.createElement("div");
             categoryContainer.className = "menu-categories-wrap";
-            categoryContainer.style.display = "flex"; // Show by default
-            categoryContainer.style.flexWrap = "wrap";
-            categoryContainer.style.gap = "10px";
-            categoryContainer.style.marginTop = "10px";
-            categoryContainer.style.justifyContent = "flex-start"; // Align to left
             filterWrapper.appendChild(categoryContainer);
         }
     }
 
     if (!categoryContainer) return;
+
+    // Apply styles to ensure visibility and alignment
+    categoryContainer.style.display = "flex";
+    categoryContainer.style.flexDirection = "column";
+    categoryContainer.style.alignItems = "flex-start";
+    categoryContainer.style.justifyContent = "flex-start";
+    categoryContainer.style.width = "100%";
+    categoryContainer.style.marginTop = "10px";
+    categoryContainer.style.gap = "10px";
 
     // Extract unique categories from products, excluding "N/A" and falsy values
     const uniqueCategories = [...new Set(products.map(p => p.categoryName).filter(cat => cat && cat !== "N/A"))];
