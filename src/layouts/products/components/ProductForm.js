@@ -15,6 +15,7 @@ import {
   ListItem,
   ListItemText,
   ListItemSecondaryAction,
+  TextField,
 } from "@mui/material";
 import ArgonBox from "components/ArgonBox";
 import ArgonInput from "components/ArgonInput";
@@ -43,15 +44,19 @@ function ProductForm({ open, onClose, onSave, product }) {
 
   useEffect(() => {
     const fetchCategories = async () => {
-      const querySnapshot = await getDocs(collection(firestore, "categories"));
-      const categoriesData = querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
-      setCategories(categoriesData);
-      
-      if (product && product.categoryId) {
-        const foundCategory = categoriesData.find((c) => c.id === product.categoryId);
-        if (foundCategory) {
-          setCategory(foundCategory);
+      try {
+        const querySnapshot = await getDocs(collection(firestore, "categories"));
+        const categoriesData = querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+        setCategories(categoriesData);
+        
+        if (product && product.categoryId) {
+          const foundCategory = categoriesData.find((c) => c.id === product.categoryId);
+          setCategory(foundCategory || null);
+        } else {
+          setCategory(null);
         }
+      } catch (error) {
+        console.error("Error fetching categories:", error);
       }
     };
     fetchCategories();
@@ -68,7 +73,7 @@ function ProductForm({ open, onClose, onSave, product }) {
         L: { enabled: false, price: "" }
       });
       setImageUrl(product.imageUrl || "");
-      setIsDiscontinued(product.isDiscontinued || false);
+      setIsDiscontinued(product.isDiscontinued || !!product.discontinued);
       setEnergyValue(product.energyValue || "");
       
       if (Array.isArray(product.ingredients)) {
@@ -99,12 +104,12 @@ function ProductForm({ open, onClose, onSave, product }) {
     onSave({
       name,
       description,
-      price,
+      price: price ? Number(price) : null,
       sizePrices,
       image,
       categoryId: category ? category.id : null,
       isDiscontinued,
-      energyValue,
+      energyValue: energyValue ? Number(energyValue) : null,
       ingredients,
     });
     onClose();
@@ -182,17 +187,29 @@ function ProductForm({ open, onClose, onSave, product }) {
                 <ArgonTypography variant="caption" fontWeight="bold">Category</ArgonTypography>
                 <Autocomplete
                   options={categories}
-                  getOptionLabel={(option) => option.name}
+                  getOptionLabel={(option) => option.name || ""}
                   value={category}
-                  isOptionEqualToValue={(option, value) => option.id === value.id}
+                  isOptionEqualToValue={(option, value) => option?.id === value?.id}
                   onChange={(event, newValue) => {
                     setCategory(newValue);
                   }}
                   renderInput={(params) => (
-                    <ArgonInput
+                    <TextField
                       {...params}
-                      placeholder="Category"
+                      placeholder="Select Category"
                       fullWidth
+                      variant="outlined"
+                      sx={{
+                        "& .MuiOutlinedInput-root": {
+                          padding: "4px 8px",
+                          borderRadius: "8px",
+                          fontSize: "0.875rem",
+                          border: "1px solid #d2d6da",
+                        },
+                        "& .MuiOutlinedInput-notchedOutline": {
+                          border: "none",
+                        },
+                      }}
                     />
                   )}
                 />

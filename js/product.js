@@ -109,7 +109,7 @@ function renderProductDetails(product) {
 
     // Show Size Picker
     const sizePicker = document.querySelector("#size-picker");
-    if (sizePicker) sizePicker.style.visibility = "visible";
+    if (sizePicker) sizePicker.style.display = "none";
 
     // Populate Ingredients
     const ingredientsList = document.querySelector("#item-ingredients");
